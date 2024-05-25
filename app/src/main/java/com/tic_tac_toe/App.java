@@ -19,6 +19,13 @@ public class App {
         keyboardSuscriber.suscribe(new EventType("Down"), boardPosition);
         keyboardSuscriber.suscribe(new EventType("Left"), boardPosition);
         keyboardSuscriber.suscribe(new EventType("Right"), boardPosition);
+        BoardValidator validator = new BoardValidator();
+        Board board = new Board(new Coord(0,0),new Size(3,3),"app/src/main/java/com/tic_tac_toe/Images/Board.png");
+        GameController gameController = new GameController(board,validator,boardPosition);
+        keyboardSuscriber.suscribe(new EventType("Up"),boardPosition);
+        keyboardSuscriber.suscribe(new EventType("Down"),boardPosition);
+        keyboardSuscriber.suscribe(new EventType("Left"),boardPosition);
+        keyboardSuscriber.suscribe(new EventType("Right"),boardPosition);
         keyboardSuscriber.suscribe(new EventType("Enter"), gameController);
     }
 }
