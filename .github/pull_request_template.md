@@ -4,12 +4,11 @@ Please paste the link of the US worked.
 
 ## Description
 
-Provide a small description of Pull Request or answer the following questions if it 
-is necessary.
+Provide a small description of Pull Request or answer the following questions if it is necessary.
 
-## What did I do?
-## How did I do it?
-## Why did I do it?
+- #### What did I do?
+- #### How did I do it?
+- #### Why did I do it?
 
 ## Type of Change
 
