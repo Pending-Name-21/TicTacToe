@@ -18,7 +18,6 @@ public class GameControllerTest {
     @BeforeEach
     public void setUp() {
         board = new Board(new Coord(0, 0), new Size(100, 100), "path");
-        board.board = new char[3][3];
         boardValidator = new BoardValidator();
         boardPosition = new BoardPosition();
         gameController = new GameController(board, boardValidator, boardPosition);
@@ -30,7 +29,7 @@ public class GameControllerTest {
         boardPosition.notify(new EventType("Up"));
         assertTrue(gameController.checkCellEmpty());
 
-        board.board[1][1] = 'X';
+        board.getBoard()[1][1] = 'X';
         assertFalse(gameController.checkCellEmpty());
     }
 
@@ -49,7 +48,7 @@ public class GameControllerTest {
         EventType enterEvent = new EventType("Enter");
 
         gameController.notify(enterEvent);
-        assertEquals('X', board.board[1][1]);
+        assertEquals('X', board.getBoard()[1][1]);
         assertEquals(Player.PLAYER_O, gameController.currentPlayer);
     }
 }

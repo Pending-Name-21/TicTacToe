@@ -33,10 +33,13 @@ public class BoardPositionTest {
         boardPosition.notify(new EventType("Down"));
         assertEquals(0, boardPosition.getYPosition());
 
+        boardPosition.notify(new EventType("Down"));
+        assertEquals(0, boardPosition.getYPosition());
+
         boardPosition.notify(new EventType("Left"));
-        assertEquals(1, boardPosition.getXPosition());
+        assertEquals(0, boardPosition.getXPosition());
 
         boardPosition.notify(new EventType("Right"));
-        assertEquals(0, boardPosition.getXPosition());
+        assertEquals(1, boardPosition.getXPosition());
     }
 }

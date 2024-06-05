@@ -10,24 +10,29 @@ import org.junit.jupiter.api.Test;
 public class BoardValidatorTest {
 
     private BoardValidator boardValidator;
+    private BoardPosition boardPosition;
+    private GameController gameController;
     private Board board;
 
     @BeforeEach
     public void setUp() {
-        boardValidator = new BoardValidator();
         board = new Board(new Coord(0, 0), new Size(100, 100), "path");
-        board.board = new char[3][3];
+        board.setBoard(new char[3][3]);
+        boardValidator = new BoardValidator();
+        boardPosition = new BoardPosition();
+        gameController = new GameController(board, boardValidator, boardPosition);
     }
+
 
     @Test
     public void testCheckWin() {
-        board.board[0][0] = 'X';
-        board.board[0][1] = 'X';
-        board.board[0][2] = 'X';
+        board.getBoard()[0][0] = 'X';
+        board.getBoard()[0][1] = 'X';
+        board.getBoard()[0][2] = 'X';
         assertTrue(boardValidator.checkWin(board));
         assertTrue(boardValidator.isGameWon());
 
-        board.board[0][0] = '\0';
+        board.getBoard()[0][0] = '\0';
         assertFalse(boardValidator.checkWin(board));
         assertFalse(boardValidator.isGameWon());
     }
@@ -35,9 +40,9 @@ public class BoardValidatorTest {
     @Test
     public void testIsGameWon() {
         assertFalse(boardValidator.isGameWon());
-        board.board[0][0] = 'X';
-        board.board[0][1] = 'X';
-        board.board[0][2] = 'X';
+        board.getBoard()[0][0] = 'X';
+        board.getBoard()[0][1] = 'X';
+        board.getBoard()[0][2] = 'X';
         boardValidator.checkWin(board);
         assertTrue(boardValidator.isGameWon());
     }

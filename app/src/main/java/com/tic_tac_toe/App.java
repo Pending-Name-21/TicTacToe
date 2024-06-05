@@ -5,7 +5,6 @@ import com.bridge.inputsuscription.KeyboardSuscriber;
 import com.bridge.piece.Coord;
 import com.bridge.piece.Size;
 
-// import bridge.piece.Sprite;
 
 public class App {
 
