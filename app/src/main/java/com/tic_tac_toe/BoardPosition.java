@@ -13,21 +13,39 @@ public class BoardPosition implements IProcessInputSubscriber {
         y = 0;
     }
 
-    public int getXPosition (){
+    public int getXPosition() {
         return x;
     }
-    public int getYPosition (){
+
+    public int getYPosition() {
         return y;
     }
 
     @Override
     public void notify(EventType eventType) {
-        switch (eventType.getName()){
-            case "Up" : { y += 1; break;}
-            case "Down" : { y -= 1; break;}
-            case "Left" : {  x += 1; break;}
-            case "Right" : {  x -= 1; break;}
-            default: break;
+        switch (eventType.getName()) {
+            case "Up":
+                {
+                    y += 1;
+                    break;
+                }
+            case "Down":
+                {
+                    y -= 1;
+                    break;
+                }
+            case "Left":
+                {
+                    x += 1;
+                    break;
+                }
+            case "Right":
+                {
+                    x -= 1;
+                    break;
+                }
+            default:
+                break;
         }
     }
 }

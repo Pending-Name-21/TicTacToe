@@ -8,7 +8,7 @@ public class GameController implements IProcessInputSubscriber {
     Player currentPlayer;
     private Board board;
     private BoardValidator boardValidator;
-    private BoardPosition boardPosition ;
+    private BoardPosition boardPosition;
 
     public GameController(Board board, BoardValidator boardValidator, BoardPosition boardPosition) {
         this.board = board;
@@ -27,7 +27,8 @@ public class GameController implements IProcessInputSubscriber {
         }
         return isCellEmpty;
     }
-    public void switchPlayer(){
+
+    public void switchPlayer() {
         if (currentPlayer == Player.PLAYER_X) {
             currentPlayer = Player.PLAYER_O;
         } else {
@@ -37,8 +38,8 @@ public class GameController implements IProcessInputSubscriber {
 
     @Override
     public void notify(EventType eventType) {
-        if (eventType.getName().equals("Enter") && checkCellEmpty()){
-            board.placeSymbol(boardPosition,currentPlayer);
+        if (eventType.getName().equals("Enter") && checkCellEmpty()) {
+            board.placeSymbol(boardPosition, currentPlayer);
             switchPlayer();
         }
     }
