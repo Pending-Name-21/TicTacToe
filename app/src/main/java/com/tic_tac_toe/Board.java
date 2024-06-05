@@ -1,8 +1,6 @@
 package com.tic_tac_toe;
 
-import com.tic_tac_toe.Library.inputsuscription.EventType;
-import com.tic_tac_toe.Library.inputsuscription.IProcessInputSubscriber;
-import com.tic_tac_toe.Library.piece.*;
+import com.tic_tac_toe.library.piece.*;
 
 
 public class Board extends Sprite{

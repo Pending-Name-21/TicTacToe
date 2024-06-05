@@ -1,11 +1,11 @@
 package com.tic_tac_toe;
 
-import com.tic_tac_toe.Library.inputsuscription.EventType;
-import com.tic_tac_toe.Library.inputsuscription.IProcessInputSubscriber;
+import com.tic_tac_toe.library.inputsuscription.EventType;
+import com.tic_tac_toe.library.inputsuscription.IProcessInputSubscriber;
 
 public class GameController implements IProcessInputSubscriber {
 
-    private Player currentPlayer;
+    Player currentPlayer;
     private Board board;
     private BoardValidator boardValidator;
     private BoardPosition boardPosition ;
