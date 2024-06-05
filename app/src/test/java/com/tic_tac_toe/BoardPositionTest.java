@@ -2,7 +2,7 @@ package com.tic_tac_toe;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.tic_tac_toe.library.inputsuscription.EventType;
+import com.bridge.inputsuscription.EventType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -2,8 +2,8 @@ package com.tic_tac_toe;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.tic_tac_toe.library.piece.Coord;
-import com.tic_tac_toe.library.piece.Size;
+import com.bridge.piece.Coord;
+import com.bridge.piece.Size;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

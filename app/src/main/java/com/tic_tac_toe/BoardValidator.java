@@ -1,6 +1,6 @@
 package com.tic_tac_toe;
 
-import com.tic_tac_toe.library.game.Game;
+import com.bridge.game.Game;
 
 public class BoardValidator extends Game {
     private boolean isGameWon;

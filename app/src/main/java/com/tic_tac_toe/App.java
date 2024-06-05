@@ -1,8 +1,8 @@
 package com.tic_tac_toe;
-import com.tic_tac_toe.library.inputsuscription.EventType;
-import com.tic_tac_toe.library.inputsuscription.KeyboardSuscriber;
-import com.tic_tac_toe.library.piece.Coord;
-import com.tic_tac_toe.library.piece.Size;
+import com.bridge.inputsuscription.EventType;
+import com.bridge.inputsuscription.KeyboardSuscriber;
+import com.bridge.piece.Coord;
+import com.bridge.piece.Size;
 
 // import bridge.piece.Sprite;
 

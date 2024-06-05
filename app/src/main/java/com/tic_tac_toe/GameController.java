@@ -1,7 +1,7 @@
 package com.tic_tac_toe;
 
-import com.tic_tac_toe.library.inputsuscription.EventType;
-import com.tic_tac_toe.library.inputsuscription.IProcessInputSubscriber;
+import com.bridge.inputsuscription.EventType;
+import com.bridge.inputsuscription.IProcessInputSubscriber;
 
 public class GameController implements IProcessInputSubscriber {
 
