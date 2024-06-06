@@ -16,8 +16,8 @@ public class GameController implements IProcessInputSubscriber {
 
     public GameController(Board board, BoardValidator boardValidator, BoardPosition boardPosition) {
         this.board = board;
-        this.boardValidator = boardValidator;
         this.boardPosition = boardPosition;
+        this.boardValidator = boardValidator;
         currentPlayer = Player.PLAYER_X;
     }
 
@@ -44,7 +44,6 @@ public class GameController implements IProcessInputSubscriber {
     public void notify(EventType eventType) {
         if (eventType.getName().equals("Enter") && checkCellEmpty()) {
             board.placeSymbol(boardPosition, currentPlayer);
-            boardValidator.checkWin(board);
             switchPlayer();
         } else {
             logger.log(Level.INFO, "Condition not met: eventType is not 'Enter' or cell is not empty");

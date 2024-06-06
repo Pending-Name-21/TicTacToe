@@ -18,24 +18,11 @@ public class BoardValidatorTest {
     public void setUp() {
         board = new Board(new Coord(0, 0), new Size(100, 100), "path");
         board.setBoard(new char[3][3]);
-        boardValidator = new BoardValidator();
+        boardValidator = new BoardValidator(board);
         boardPosition = new BoardPosition();
-        gameController = new GameController(board, boardValidator, boardPosition);
+        gameController = new GameController(board,boardValidator, boardPosition);
     }
 
-
-    @Test
-    public void testCheckWin() {
-        board.getBoard()[0][0] = 'X';
-        board.getBoard()[0][1] = 'X';
-        board.getBoard()[0][2] = 'X';
-        assertTrue(boardValidator.checkWin(board));
-        assertTrue(boardValidator.isGameWon());
-
-        board.getBoard()[0][0] = '\0';
-        assertFalse(boardValidator.checkWin(board));
-        assertFalse(boardValidator.isGameWon());
-    }
 
     @Test
     public void testIsGameWon() {
@@ -43,7 +30,7 @@ public class BoardValidatorTest {
         board.getBoard()[0][0] = 'X';
         board.getBoard()[0][1] = 'X';
         board.getBoard()[0][2] = 'X';
-        boardValidator.checkWin(board);
+        boardValidator.isGameWon();
         assertTrue(boardValidator.isGameWon());
     }
 }

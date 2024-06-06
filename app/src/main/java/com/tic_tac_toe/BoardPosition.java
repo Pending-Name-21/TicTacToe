@@ -42,7 +42,7 @@ public class BoardPosition implements IProcessInputSubscriber {
                 x = Math.min(x + 1, 2);
                 break;
             default:
-                logger.log(Level.WARNING, "Unhandled event type: " + eventType.getName());
+                logger.log(Level.INFO, "Unhandled event type: %s", eventType.getName());
                 break;
         }
     }

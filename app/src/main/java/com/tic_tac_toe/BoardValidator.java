@@ -3,13 +3,13 @@ package com.tic_tac_toe;
 import com.bridge.game.Game;
 
 public class BoardValidator extends Game {
-    private boolean isGameWon;
-
-    public BoardValidator() {
-        isGameWon = false;
+    private Board board;
+    public BoardValidator(Board board) {
+        this.board = board;
     }
 
-    public boolean checkWin(Board board) {
+    @Override
+    public boolean isGameWon() {
         char[][] gameBoard = board.getBoard();
         int size = gameBoard.length;
         boolean foundWin = false;
@@ -49,13 +49,6 @@ public class BoardValidator extends Game {
                 foundWin = true;
             }
         }
-
-        isGameWon = foundWin;
-        return isGameWon;
-    }
-
-    @Override
-    public boolean isGameWon() {
-        return isGameWon;
+        return foundWin;
     }
 }

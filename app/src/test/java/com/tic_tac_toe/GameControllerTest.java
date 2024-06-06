@@ -18,7 +18,7 @@ public class GameControllerTest {
     @BeforeEach
     public void setUp() {
         board = new Board(new Coord(0, 0), new Size(100, 100), "path");
-        boardValidator = new BoardValidator();
+        boardValidator = new BoardValidator(board);
         boardPosition = new BoardPosition();
         gameController = new GameController(board, boardValidator, boardPosition);
     }
