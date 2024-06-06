@@ -20,9 +20,8 @@ public class BoardValidatorTest {
         board.setBoard(new char[3][3]);
         boardValidator = new BoardValidator(board);
         boardPosition = new BoardPosition();
-        gameController = new GameController(board,boardValidator, boardPosition);
+        gameController = new GameController(board, boardValidator, boardPosition);
     }
-
 
     @Test
     public void testIsGameWon() {

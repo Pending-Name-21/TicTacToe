@@ -2,8 +2,8 @@ package com.tic_tac_toe;
 
 import com.bridge.inputsuscription.EventType;
 import com.bridge.inputsuscription.IProcessInputSubscriber;
-import java.util.logging.Logger;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class GameController implements IProcessInputSubscriber {
 
@@ -12,7 +12,6 @@ public class GameController implements IProcessInputSubscriber {
     private BoardValidator boardValidator;
     private BoardPosition boardPosition;
     private static final Logger logger = Logger.getLogger(GameController.class.getName());
-
 
     public GameController(Board board, BoardValidator boardValidator, BoardPosition boardPosition) {
         this.board = board;
@@ -46,7 +45,8 @@ public class GameController implements IProcessInputSubscriber {
             board.placeSymbol(boardPosition, currentPlayer);
             switchPlayer();
         } else {
-            logger.log(Level.INFO, "Condition not met: eventType is not 'Enter' or cell is not empty");
+            logger.log(
+                    Level.INFO, "Condition not met: eventType is not 'Enter' or cell is not empty");
         }
     }
 }

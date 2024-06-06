@@ -2,16 +2,14 @@ package com.tic_tac_toe;
 
 import com.bridge.inputsuscription.EventType;
 import com.bridge.inputsuscription.IProcessInputSubscriber;
-import java.util.logging.Logger;
 import java.util.logging.Level;
-
+import java.util.logging.Logger;
 
 public class BoardPosition implements IProcessInputSubscriber {
 
     private int x;
     private int y;
     private static final Logger logger = Logger.getLogger(BoardPosition.class.getName());
-
 
     public BoardPosition() {
         x = 0;
@@ -46,5 +44,4 @@ public class BoardPosition implements IProcessInputSubscriber {
                 break;
         }
     }
-
 }

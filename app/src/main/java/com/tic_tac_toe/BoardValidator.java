@@ -4,6 +4,7 @@ import com.bridge.game.Game;
 
 public class BoardValidator extends Game {
     private Board board;
+
     public BoardValidator(Board board) {
         this.board = board;
     }

@@ -10,11 +10,13 @@ public class Board extends Sprite {
         super(position, size, path);
         this.board = new char[3][3];
     }
+
     void placeSymbol(BoardPosition boardPosition, Player player) {
         int x = boardPosition.getXPosition();
         int y = boardPosition.getYPosition();
         board[x][y] = player.getSymbol();
     }
+
     public char[][] getBoard() {
         return board;
     }
