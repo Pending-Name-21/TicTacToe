@@ -3,3 +3,10 @@
 
 # Ignore Gradle build output directory
 build
+
+# IntelliJ
+out/
+.idea/**
+
+# Ignore local dependencies
+app/local/
