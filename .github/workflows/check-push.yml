@@ -57,7 +57,7 @@ jobs:
       - name: Build Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: tic-tac-toe-app
-          path: build/libs/*.jar
+          name: tic-tac-toe-game
+          path: "app/build/libs/tic-tac-toe-app.jar"
           retention-days: 5
           overwrite: true
