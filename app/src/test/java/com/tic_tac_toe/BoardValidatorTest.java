@@ -25,11 +25,11 @@ public class BoardValidatorTest {
 
     @Test
     public void testIsGameWon() {
-        assertFalse(boardValidator.isGameWon());
+        assertFalse(boardValidator.isGameOver());
         board.getBoard()[0][0] = 'X';
         board.getBoard()[0][1] = 'X';
         board.getBoard()[0][2] = 'X';
-        boardValidator.isGameWon();
-        assertTrue(boardValidator.isGameWon());
+        boardValidator.isGameOver();
+        assertTrue(boardValidator.isGameOver());
     }
 }
