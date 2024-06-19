@@ -1,19 +1,21 @@
 package com.tic_tac_toe;
 
-import com.bridge.inputsuscription.EventType;
-import com.bridge.inputsuscription.IProcessInputSubscriber;
+import com.bridge.processinputhandler.IProcessInputSubscriber;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+import com.bridge.processinputhandler.EventType;
 public class BoardPosition implements IProcessInputSubscriber {
 
     private int x;
     private int y;
+    private Board board;
     private static final Logger logger = Logger.getLogger(BoardPosition.class.getName());
 
-    public BoardPosition() {
+    public BoardPosition(Board board) {
         x = 0;
         y = 0;
+        this.board = board;
     }
 
     public int getXPosition() {
@@ -23,9 +25,7 @@ public class BoardPosition implements IProcessInputSubscriber {
     public int getYPosition() {
         return y;
     }
-
-    @Override
-    public void notify(EventType eventType) {
+    private void makeMovement(EventType eventType){
         switch (eventType.getName()) {
             case "Up":
                 y = Math.min(y + 1, 2);
@@ -43,5 +43,11 @@ public class BoardPosition implements IProcessInputSubscriber {
                 logger.log(Level.INFO, "Unhandled event type: %s", eventType.getName());
                 break;
         }
+    }
+
+    @Override
+    public void notify(EventType eventType) {
+        makeMovement(eventType);
+        board.changingSpriteByUserPosition(x,y);
     }
 }

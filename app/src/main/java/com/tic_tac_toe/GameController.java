@@ -1,7 +1,8 @@
 package com.tic_tac_toe;
 
-import com.bridge.inputsuscription.EventType;
-import com.bridge.inputsuscription.IProcessInputSubscriber;
+
+import com.bridge.processinputhandler.EventType;
+import com.bridge.processinputhandler.IProcessInputSubscriber;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,11 +26,12 @@ public class GameController implements IProcessInputSubscriber {
         int x = boardPosition.getXPosition();
         int y = boardPosition.getYPosition();
 
-        if (board.getBoard()[x][y] == '\0') {
+        if (board.getBoard()[x][y] == null) {
             isCellEmpty = true;
         }
         return isCellEmpty;
     }
+
 
     public void switchPlayer() {
         if (currentPlayer == Player.PLAYER_X) {
@@ -38,7 +40,6 @@ public class GameController implements IProcessInputSubscriber {
             currentPlayer = Player.PLAYER_X;
         }
     }
-
     @Override
     public void notify(EventType eventType) {
         if (eventType.getName().equals("Enter") && checkCellEmpty()) {
