@@ -2,9 +2,9 @@ package com.tic_tac_toe;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.bridge.inputsuscription.EventType;
 import com.bridge.piece.Coord;
 import com.bridge.piece.Size;
+import com.bridge.processinputhandler.EventType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

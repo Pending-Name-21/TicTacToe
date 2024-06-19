@@ -1,8 +1,8 @@
 package com.tic_tac_toe;
 
-import com.bridge.game.Game;
+import com.bridge.gamesettings.AGameSettings;
 
-public class BoardValidator extends Game {
+public class BoardValidator extends AGameSettings {
     private Board board;
 
     public BoardValidator(Board board) {
@@ -10,7 +10,7 @@ public class BoardValidator extends Game {
     }
 
     @Override
-    public boolean isGameWon() {
+    public boolean isGameOver() {
         char[][] gameBoard = board.getBoard();
         int size = gameBoard.length;
         boolean foundWin = false;
