@@ -2,13 +2,13 @@ package com.tic.tac.toe;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.bridge.piece.Coord;
-import com.bridge.piece.Size;
+import com.bridge.renderHandler.sprite.Coord;
+import com.bridge.renderHandler.sprite.Size;
+import java.nio.file.Path;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class BoardValidatorTest {
-
     private BoardValidator boardValidator;
     private BoardPosition boardPosition;
     private GameController gameController;
@@ -16,7 +16,7 @@ public class BoardValidatorTest {
 
     @BeforeEach
     public void setUp() {
-        board = new Board(new Coord(0, 0), new Size(100, 100), "path");
+        board = new Board(new Coord(0, 0), 0, new Size(100, 100), Path.of("path"));
         board.setBoard(new char[3][3]);
         boardValidator = new BoardValidator(board);
         boardPosition = new BoardPosition();

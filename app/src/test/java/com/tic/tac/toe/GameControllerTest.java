@@ -2,9 +2,9 @@ package com.tic.tac.toe;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.bridge.piece.Coord;
-import com.bridge.piece.Size;
-import com.bridge.processinputhandler.EventType;
+import com.bridge.renderHandler.sprite.Coord;
+import com.bridge.renderHandler.sprite.Size;
+import java.nio.file.Path;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +17,7 @@ public class GameControllerTest {
 
     @BeforeEach
     public void setUp() {
-        board = new Board(new Coord(0, 0), new Size(100, 100), "path");
+        board = new Board(new Coord(0, 0), 0, new Size(100, 100), Path.of("path"));
         boardValidator = new BoardValidator(board);
         boardPosition = new BoardPosition();
         gameController = new GameController(board, boardValidator, boardPosition);
@@ -25,8 +25,8 @@ public class GameControllerTest {
 
     @Test
     public void testCheckCellEmpty() {
-        boardPosition.notify(new EventType("Right"));
-        boardPosition.notify(new EventType("Up"));
+        boardPosition.doNotify("Right");
+        boardPosition.doNotify("Up");
         assertTrue(gameController.checkCellEmpty());
 
         board.getBoard()[1][1] = 'X';
@@ -43,11 +43,11 @@ public class GameControllerTest {
 
     @Test
     public void testNotify() {
-        boardPosition.notify(new EventType("Right"));
-        boardPosition.notify(new EventType("Up"));
-        EventType enterEvent = new EventType("Enter");
+        boardPosition.doNotify("Right");
+        boardPosition.doNotify("Up");
+        // EventType enterEvent = new EventType("Enter");
 
-        gameController.notify(enterEvent);
+        gameController.doNotify("Enter");
         assertEquals('X', board.getBoard()[1][1]);
         assertEquals(Player.PLAYER_O, gameController.currentPlayer);
     }
