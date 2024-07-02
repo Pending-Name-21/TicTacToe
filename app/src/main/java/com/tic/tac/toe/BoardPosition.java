@@ -1,12 +1,10 @@
 package com.tic.tac.toe;
 
-import com.bridge.processinputhandler.EventType;
-import com.bridge.processinputhandler.IProcessInputSubscriber;
+import com.bridge.processinputhandler.IEventSubscriber;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class BoardPosition implements IProcessInputSubscriber {
-
+public class BoardPosition implements IEventSubscriber {
     private int x;
     private int y;
     private static final Logger logger = Logger.getLogger(BoardPosition.class.getName());
@@ -25,23 +23,17 @@ public class BoardPosition implements IProcessInputSubscriber {
     }
 
     @Override
-    public void notify(EventType eventType) {
-        switch (eventType.getName()) {
-            case "Up":
-                y = Math.min(y + 1, 2);
-                break;
-            case "Down":
-                y = Math.max(y - 1, 0);
-                break;
-            case "Left":
-                x = Math.max(x - 1, 0);
-                break;
-            case "Right":
-                x = Math.min(x + 1, 2);
-                break;
-            default:
-                logger.log(Level.INFO, "Unhandled event type: %s", eventType.getName());
-                break;
+    public void doNotify(Object eventType) {
+        if (eventType.equals("Up")) {
+            y = Math.min(y + 1, 2);
+        } else if (eventType.equals("Down")) {
+            y = Math.max(y - 1, 0);
+        } else if (eventType.equals("Left")) {
+            x = Math.max(x - 1, 0);
+        } else if (eventType.equals("Right")) {
+            x = Math.min(x + 1, 2);
+        } else {
+            logger.log(Level.INFO, "Unhandled event type: %s", eventType.getClass());
         }
     }
 }

@@ -1,12 +1,10 @@
 package com.tic.tac.toe;
 
-import com.bridge.processinputhandler.EventType;
-import com.bridge.processinputhandler.IProcessInputSubscriber;
+import com.bridge.processinputhandler.IEventSubscriber;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class GameController implements IProcessInputSubscriber {
-
+public class GameController implements IEventSubscriber {
     Player currentPlayer;
     private Board board;
     private BoardValidator boardValidator;
@@ -40,8 +38,8 @@ public class GameController implements IProcessInputSubscriber {
     }
 
     @Override
-    public void notify(EventType eventType) {
-        if (eventType.getName().equals("Enter") && checkCellEmpty()) {
+    public void doNotify(Object eventType) {
+        if (eventType.equals("Enter") && checkCellEmpty()) {
             board.placeSymbol(boardPosition, currentPlayer);
             switchPlayer();
         } else {
