@@ -1,4 +1,4 @@
-package com.tic_tac_toe;
+package com.tic.tac.toe;
 
 import static org.junit.jupiter.api.Assertions.*;
 

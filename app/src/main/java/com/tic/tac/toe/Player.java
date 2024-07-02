@@ -1,4 +1,4 @@
-package com.tic_tac_toe;
+package com.tic.tac.toe;
 
 public enum Player {
     PLAYER_X('X'),
