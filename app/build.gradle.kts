@@ -18,7 +18,11 @@ dependencies {
     testImplementation(libs.junit.jupiter)
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
-    implementation("bridge:bridge-0.0.0-alpha.0.2.0")
+    // Use of Bridge Library
+    implementation("com.bridge:bridge-0.0.0-alpha.0.2.0")
+    
+    testImplementation("com.bridge:bridge-0.0.0-alpha.0.2.0")
+    testRuntimeOnly("com.bridge:bridge-0.0.0-alpha.0.2.0")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
