@@ -1,13 +1,11 @@
-package com.tic_tac_toe;
+package com.tic.tac.toe;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.bridge.processinputhandler.EventType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class BoardPositionTest {
-
     private BoardPosition boardPosition;
 
     @BeforeEach
@@ -26,20 +24,20 @@ public class BoardPositionTest {
     }
 
     @Test
-    public void testNotify() {
-        boardPosition.notify(new EventType("Up"));
+    public void testDoNotify() {
+        boardPosition.doNotify("Up");
         assertEquals(1, boardPosition.getYPosition());
 
-        boardPosition.notify(new EventType("Down"));
+        boardPosition.doNotify("Down");
         assertEquals(0, boardPosition.getYPosition());
 
-        boardPosition.notify(new EventType("Down"));
+        boardPosition.doNotify("Down");
         assertEquals(0, boardPosition.getYPosition());
 
-        boardPosition.notify(new EventType("Left"));
+        boardPosition.doNotify("Left");
         assertEquals(0, boardPosition.getXPosition());
 
-        boardPosition.notify(new EventType("Right"));
+        boardPosition.doNotify("Right");
         assertEquals(1, boardPosition.getXPosition());
     }
 }

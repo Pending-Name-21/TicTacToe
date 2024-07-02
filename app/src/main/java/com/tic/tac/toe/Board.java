@@ -1,13 +1,13 @@
-package com.tic_tac_toe;
+package com.tic.tac.toe;
 
-import com.bridge.piece.*;
+import com.bridge.renderHandler.sprite.*;
+import java.nio.file.Path;
 
 public class Board extends Sprite {
-
     private char[][] board;
 
-    public Board(Coord position, Size size, String path) {
-        super(position, size, path);
+    public Board(Coord position, int z_index, Size size, Path path) {
+        super(position, z_index, size, path);
         this.board = new char[3][3];
     }
 
