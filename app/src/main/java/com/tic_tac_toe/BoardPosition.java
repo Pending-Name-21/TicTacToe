@@ -1,7 +1,7 @@
 package com.tic_tac_toe;
 
-import com.bridge.inputsuscription.EventType;
-import com.bridge.inputsuscription.IProcessInputSubscriber;
+import com.bridge.processinputhandler.EventType;
+import com.bridge.processinputhandler.IProcessInputSubscriber;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
