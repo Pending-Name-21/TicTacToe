@@ -27,6 +27,14 @@ public class BoardPosition implements IEventSubscriber<Keyboard> {
         return y;
     }
 
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
     @Override
     public void doNotify(Keyboard keyboard) {
         String keyCode = keyboard.key();

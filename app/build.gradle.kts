@@ -24,13 +24,13 @@ dependencies {
 // Apply a specific Java toolchain to ease working on different environments.
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+        languageVersion.set(JavaLanguageVersion.of(17))
     }
 }
 
 application {
     // Define the main class for the application.
-    mainClass = "com.tic_tac_toe.App"
+    mainClass.set("com.tic_tac_toe.App")
 }
 
 tasks.named<Test>("test") {
