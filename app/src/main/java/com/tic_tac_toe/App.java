@@ -10,7 +10,7 @@ public class App {
         KeyboardListener keyboardSuscriber = new KeyboardListener();
         BoardPosition boardPosition = new BoardPosition();
         URL imageUrl = App.class.getResource("/com/tic_tac_toe/Images/board/EmptyBoard.png");
-        Board board = new Board(new Coord(0, 0), new Size(3, 3), imageUrl.toString());
+        Board board = new Board();
         BoardValidator validator = new BoardValidator(board);
         GameController gameController = new GameController(board, validator, boardPosition);
         keyboardSuscriber.suscribe(new EventType("Up"), boardPosition);

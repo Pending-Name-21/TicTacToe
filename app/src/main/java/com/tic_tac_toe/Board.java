@@ -1,62 +1,65 @@
 package com.tic_tac_toe;
 
-import com.bridge.renderHandler.Coord;
-import com.bridge.renderHandler.Size;
+import com.bridge.core.exceptions.renderHandlerExceptions.NonExistentFilePathException;
+import com.bridge.renderHandler.builders.SpriteBuilder;
+import com.bridge.renderHandler.repository.SpriteRepository;
+import com.bridge.renderHandler.sprite.*;
 import com.bridge.renderHandler.sprite.Sprite;
-import com.bridge.renderHandler.sprite.SpriteRenderer;
 
-public class Board extends SpriteRenderer {
+public class Board{
+    private SpriteBuilder builder;
+    private Cell[][] board;
+    private Cell currentCell;
 
-    private Sprite[][] board;
-
-    private Sprite[][] sprites;
-    private Sprite currentSprite;
-
-    public Board() {
-        this.sprites = new Sprite[3][3];
-        this.board = new Sprite[3][3];
+    public Board(SpriteRepository repository) throws NonExistentFilePathException {
+        this.board = new Cell[3][3];
+        builder = new SpriteBuilder(repository);
+        builder.buildSize(5,5);
+        builder.buildCoord(0,0);
+        builder.buildPath("/com/tic_tac_toe/Images/board/EmptyBoard.png");
         initializeSprites();
     }
 
 
-    void placeSymbol(BoardPosition boardPosition, Player player) {
-        int x = boardPosition.getXPosition();
-        int y = boardPosition.getYPosition();
+    void placeSymbol(int x, int y, Player player) throws NonExistentFilePathException {
 
-        Size spriteSize = new Size(1, 1);
-        String spritePath = player.getSymbol() == 'X' ? "com/tic_tac_toe/Images/assets/general/X.png" : "com/tic_tac_toe/Images/assets/general/O.png";
+        builder.buildSize(5,5);
+        builder.buildCoord(x,y);
+        builder.buildPath(player.getSymbol() == 'X' ? "com/tic_tac_toe/Images/assets/general/X.png" : "com/tic_tac_toe/Images/assets/general/O.png");
+        builder.assemble().setZ_index(3);
 
-        Coord spritePosition = new Coord(0,0);
-        Sprite sprite = new Sprite(spritePosition, spriteSize, spritePath);
-
-        board[x][y] = sprite;
+        board[x][y].setSymbol(player.getSymbol());
     }
-    public void changingSpriteByUserPosition(int x, int y){
-        this.updateSprite(currentSprite,sprites[x][y]);
-        currentSprite = sprites[x][y];
+    public void changingSpriteHiddenByUserPosition(int x, int y){
+        currentCell.setSpriteHidden(true);
+        currentCell = board[x][y];
+        currentCell.setSpriteHidden(false);
     }
 
-    private void initializeSprites(){
-        sprites[0][0] = new Sprite(new Coord(0,0),new Size(1,1),"com/tic_tac_toe/Images/assets/specificSelectedSquare/BoardSelected11.png");
-        sprites[0][1] = new Sprite(new Coord(0,0),new Size(1,1),"com/tic_tac_toe/Images/assets/specificSelectedSquare/BoardSelected12.png");
-        sprites[0][2] = new Sprite(new Coord(0,0),new Size(1,1),"com/tic_tac_toe/Images/assets/specificSelectedSquare/BoardSelected13.png");
-        sprites[1][0] = new Sprite(new Coord(0,0),new Size(1,1),"com/tic_tac_toe/Images/assets/specificSelectedSquare/BoardSelected21.png");
-        sprites[1][1] = new Sprite(new Coord(0,0),new Size(1,1),"com/tic_tac_toe/Images/assets/specificSelectedSquare/BoardSelected22.png");
-        sprites[1][2] = new Sprite(new Coord(0,0),new Size(1,1),"com/tic_tac_toe/Images/assets/specificSelectedSquare/BoardSelected23.png");
-        sprites[2][0] = new Sprite(new Coord(0,0),new Size(1,1),"com/tic_tac_toe/Images/assets/specificSelectedSquare/BoardSelected31.png");
-        sprites[2][1] = new Sprite(new Coord(0,0),new Size(1,1),"com/tic_tac_toe/Images/assets/specificSelectedSquare/BoardSelected32.png");
-        sprites[2][2] = new Sprite(new Coord(0,0),new Size(1,1),"com/tic_tac_toe/Images/assets/specificSelectedSquare/BoardSelected33.png");
+    private void initializeSprites() throws NonExistentFilePathException {
+        String basePath = "com/tic_tac_toe/Images/assets/specificSelectedSquare/BoardSelected";
 
-        this.addSprite(new Sprite(new Coord(0,0),new Size(1,1),"/com/tic_tac_toe/Images/board/EmptyBoard.png"));
-        this.addSprite(sprites[0][0]);
-        currentSprite = sprites[0][0];
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                String imagePath = basePath + (i + 1) + (j + 1) + ".png";
 
+                builder.buildCoord(i, j);
+                builder.buildSize(5, 5);
+                builder.buildPath(imagePath);
+                Sprite sprite = builder.assemble();
+                sprite.setZ_index(2);
+                board[i][j] = new Cell(sprite);
+            }
+        }
+
+        currentCell = board[0][0];
+        currentCell.setSpriteHidden(false);
     }
-    public Sprite[][] getBoard() {
+    public Cell[][] getBoard() {
         return board;
     }
 
-    public void setBoard(Sprite[][] board) {
+    public void setBoard(Cell[][] board) {
         this.board = board;
     }
 }

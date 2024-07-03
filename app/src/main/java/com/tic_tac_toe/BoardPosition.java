@@ -1,11 +1,12 @@
 package com.tic_tac_toe;
 
-import com.bridge.processinputhandler.IProcessInputSubscriber;
+import CoffeeTime.InputEvents.Keyboard;
+import com.bridge.processinputhandler.IEventSubscriber;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import com.bridge.processinputhandler.EventType;
-public class BoardPosition implements IProcessInputSubscriber {
+
+public class BoardPosition implements IEventSubscriber<Keyboard> {
 
     private int x;
     private int y;
@@ -25,29 +26,27 @@ public class BoardPosition implements IProcessInputSubscriber {
     public int getYPosition() {
         return y;
     }
-    private void makeMovement(EventType eventType){
-        switch (eventType.getName()) {
-            case "Up":
+
+    @Override
+    public void doNotify(Keyboard keyboard) {
+        String keyCode = keyboard.key();
+        switch (keyCode) {
+            case "71": // Up
                 y = Math.min(y + 1, 2);
                 break;
-            case "Down":
+            case "73": // Down
                 y = Math.max(y - 1, 0);
                 break;
-            case "Left":
+            case "70": // Left
                 x = Math.max(x - 1, 0);
                 break;
-            case "Right":
+            case "72": // Right
                 x = Math.min(x + 1, 2);
                 break;
             default:
-                logger.log(Level.INFO, "Unhandled event type: %s", eventType.getName());
+                logger.log(Level.INFO, "Unhandled key code: {0}", keyCode);
                 break;
         }
-    }
-
-    @Override
-    public void notify(EventType eventType) {
-        makeMovement(eventType);
-        board.changingSpriteByUserPosition(x,y);
+        board.changingSpriteHiddenByUserPosition(x,y);
     }
 }
