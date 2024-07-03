@@ -1,7 +1,6 @@
 package com.tic_tac_toe;
 
 import com.bridge.gamesettings.AGameSettings;
-import com.bridge.renderHandler.sprite.Sprite;
 
 public class BoardValidator extends AGameSettings {
     private Board board;
@@ -12,60 +11,65 @@ public class BoardValidator extends AGameSettings {
 
     @Override
     public boolean isGameOver() {
-        Sprite[][] gameBoard = board.getBoard();
+        String result = checkWinner();
+        return !result.isEmpty();
+    }
+    public String checkWinner() {
+        Cell[][] gameBoard = board.getBoard();
         int size = gameBoard.length;
-        boolean foundWin = false;
-        String path0;
-        String path1;
-        String path2;
+        String result = "";
 
+        // Check rows
         for (int i = 0; i < size; i++) {
             if (gameBoard[i][0] != null && gameBoard[i][1] != null && gameBoard[i][2] != null) {
-                path0 = gameBoard[i][0].getPath();
-                path1 = gameBoard[i][1].getPath();
-                path2 = gameBoard[i][2].getPath();
-                if (path0.equals(path1) && path1.equals(path2)) {
-                    foundWin = true;
+                char symbol0 = gameBoard[i][0].getSymbol();
+                char symbol1 = gameBoard[i][1].getSymbol();
+                char symbol2 = gameBoard[i][2].getSymbol();
+                if (symbol0 != '\0' && symbol0 == symbol1 && symbol1 == symbol2) {
+                    result = "Row " + (i + 1);
                     break;
                 }
             }
         }
 
-        if (!foundWin) {
+        // Check columns
+        if (result.isEmpty()) {
             for (int i = 0; i < size; i++) {
                 if (gameBoard[0][i] != null && gameBoard[1][i] != null && gameBoard[2][i] != null) {
-                    path0 = gameBoard[0][i].getPath();
-                    path1 = gameBoard[1][i].getPath();
-                    path2 = gameBoard[2][i].getPath();
-                    if (path0.equals(path1) && path1.equals(path2)) {
-                        foundWin = true;
+                    char symbol0 = gameBoard[0][i].getSymbol();
+                    char symbol1 = gameBoard[1][i].getSymbol();
+                    char symbol2 = gameBoard[2][i].getSymbol();
+                    if (symbol0 != '\0' && symbol0 == symbol1 && symbol1 == symbol2) {
+                        result = "Column " + (i + 1);
                         break;
                     }
                 }
             }
         }
 
-        if (!foundWin) {
+        // Check diagonals
+        if (result.isEmpty()) {
             if (gameBoard[0][0] != null && gameBoard[1][1] != null && gameBoard[2][2] != null) {
-                path0 = gameBoard[0][0].getPath();
-                path1 = gameBoard[1][1].getPath();
-                path2 = gameBoard[2][2].getPath();
-                if (path0.equals(path1) && path1.equals(path2)) {
-                    foundWin = true;
+                char symbol0 = gameBoard[0][0].getSymbol();
+                char symbol1 = gameBoard[1][1].getSymbol();
+                char symbol2 = gameBoard[2][2].getSymbol();
+                if (symbol0 != '\0' && symbol0 == symbol1 && symbol1 == symbol2) {
+                    result = "Diagonal 1";
                 }
             }
         }
 
-        if (!foundWin) {
+        if (result.isEmpty()) {
             if (gameBoard[0][2] != null && gameBoard[1][1] != null && gameBoard[2][0] != null) {
-                path0 = gameBoard[0][2].getPath();
-                path1 = gameBoard[1][1].getPath();
-                path2 = gameBoard[2][0].getPath();
-                if (path0.equals(path1) && path1.equals(path2)) {
-                    foundWin = true;
+                char symbol0 = gameBoard[0][2].getSymbol();
+                char symbol1 = gameBoard[1][1].getSymbol();
+                char symbol2 = gameBoard[2][0].getSymbol();
+                if (symbol0 != '\0' && symbol0 == symbol1 && symbol1 == symbol2) {
+                    result = "Diagonal 2";
                 }
             }
         }
-        return foundWin;
+
+        return result;
     }
 }

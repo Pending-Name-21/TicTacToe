@@ -1,22 +1,20 @@
 package com.tic_tac_toe;
 
-import com.bridge.processinputhandler.EventType;
-import com.bridge.processinputhandler.listeners.KeyboardListener;
+import com.bridge.core.exceptions.renderHandlerExceptions.NonExistentFilePathException;
+import com.bridge.processinputhandler.KeyboardEventManager;
+import com.bridge.renderHandler.repository.SpriteRepository;
+
 import java.net.URL;
 
 public class App {
 
-    public static void main(String[] args) {
-        KeyboardListener keyboardSuscriber = new KeyboardListener();
-        BoardPosition boardPosition = new BoardPosition();
-        URL imageUrl = App.class.getResource("/com/tic_tac_toe/Images/board/EmptyBoard.png");
-        Board board = new Board();
+    public static void main(String[] args) throws NonExistentFilePathException {
+        SpriteRepository spriteRepository = new SpriteRepository();
+        KeyboardEventManager keyboardSuscriber = new KeyboardEventManager();
+
+        Board board = new Board(spriteRepository);
+        BoardPosition boardPosition = new BoardPosition(board);
         BoardValidator validator = new BoardValidator(board);
         GameController gameController = new GameController(board, validator, boardPosition);
-        keyboardSuscriber.suscribe(new EventType("Up"), boardPosition);
-        keyboardSuscriber.suscribe(new EventType("Down"), boardPosition);
-        keyboardSuscriber.suscribe(new EventType("Left"), boardPosition);
-        keyboardSuscriber.suscribe(new EventType("Right"), boardPosition);
-        keyboardSuscriber.suscribe(new EventType("Enter"), gameController);
     }
 }

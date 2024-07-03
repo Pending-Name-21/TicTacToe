@@ -17,4 +17,8 @@ public class Cell {
     public void setSpriteHidden(boolean isHidden){
         selectedSprite.setHidden(isHidden);
     }
+
+    public char getSymbol() {
+        return symbol;
+    }
 }

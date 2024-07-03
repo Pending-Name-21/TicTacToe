@@ -1,12 +1,11 @@
 package com.tic_tac_toe;
-
-
-import com.bridge.processinputhandler.EventType;
-import com.bridge.processinputhandler.IProcessInputSubscriber;
+import CoffeeTime.InputEvents.Keyboard;
+import com.bridge.core.exceptions.renderHandlerExceptions.NonExistentFilePathException;
+import com.bridge.processinputhandler.IEventSubscriber;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class GameController implements IProcessInputSubscriber {
+public class GameController implements IEventSubscriber<Keyboard> {
 
     Player currentPlayer;
     private Board board;
@@ -41,11 +40,15 @@ public class GameController implements IProcessInputSubscriber {
         }
     }
     @Override
-    public void notify(EventType eventType) {
-        if (eventType.getName().equals("Enter") && checkCellEmpty()) {
-            board.placeSymbol(boardPosition, currentPlayer);
+    public void doNotify(Keyboard keyboard) {
+        if (keyboard.key().equals("75")){
+            try {
+                board.placeSymbol(boardPosition.getXPosition(),boardPosition.getYPosition(), currentPlayer);
+            } catch (NonExistentFilePathException e) {
+                throw new RuntimeException(e);
+            }
             switchPlayer();
-        } else {
+        }else {
             logger.log(
                     Level.INFO, "Condition not met: eventType is not 'Enter' or cell is not empty");
         }
