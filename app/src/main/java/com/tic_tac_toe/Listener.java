@@ -6,6 +6,7 @@ import com.bridge.core.exceptions.renderHandlerExceptions.RenderException;
 import com.bridge.ipc.SocketClient;
 import com.bridge.ipc.Transmitter;
 import com.bridge.processinputhandler.IEventSubscriber;
+import com.bridge.processinputhandler.KeyboardEventManager;
 import com.bridge.renderHandler.render.Frame;
 import com.bridge.renderHandler.repository.SpriteRepository;
 import com.bridge.renderHandler.builders.SpriteBuilder;
@@ -20,9 +21,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Listener implements IEventSubscriber<Keyboard> {
+public class Listener {
 
     private Transmitter transmitter;
+    private KeyboardEventManager keyboardEventManager;
+
+    public Listener(KeyboardEventManager keyboardEventManager) {
+        this.keyboardEventManager = keyboardEventManager;
+    }
 
     private boolean isSocketRunning() {
         Path socketPath = Path.of("/tmp/socket_console");
@@ -48,6 +54,7 @@ public class Listener implements IEventSubscriber<Keyboard> {
                 } catch (NonExistentFilePathException e) {
                     throw new RuntimeException(e);
                 }
+                keyboardEventManager.subscribe(new BoardPosition(board));
                 successConnection = true;
             } else {
                 try {
@@ -56,32 +63,6 @@ public class Listener implements IEventSubscriber<Keyboard> {
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-            }
-        }
-    }
-
-    @Override
-    public void doNotify(Keyboard keyboard) {
-        if (transmitter != null) {
-            if (keyboard.type().equals("KeyPressed") && keyboard.key().equals("S")) {
-                System.out.println("___________________________RECEIVED___________________________");
-                SpriteRepository squareRepository = new SpriteRepository();
-                SpriteBuilder builder = new SpriteBuilder(squareRepository);
-                List<Sprite> sprites = new ArrayList<>();
-                builder.buildSize(600, 800);
-                builder.buildCoord(0, 0);
-                try {
-                    builder.buildPath(Utils.BASE_PATH + "/board/selectedCells/Board-21.png");
-                } catch (NonExistentFilePathException e) {
-                    throw new RuntimeException(e);
-                }
-                builder.assemble();
-                try {
-                    transmitter.send(new Frame(squareRepository.retrieve(), List.of()));
-                } catch (RenderException e) {
-                    throw new RuntimeException(e);
-                }
-
             }
         }
     }

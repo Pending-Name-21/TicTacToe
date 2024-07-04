@@ -20,12 +20,9 @@ public class SocketRunner {
 
     public static void main(String[] args) {
         KeyboardEventManager keyboardEventManager = new KeyboardEventManager();
-        Listener listener = new Listener();
-        keyboardEventManager.subscribe(listener);
-        MouseEventManager mouseEventManager = new MouseEventManager();
+        Listener listener = new Listener(keyboardEventManager);
         Receiver receiver = new Receiver();
         receiver.addBuffer(keyboardEventManager);
-        receiver.addBuffer(mouseEventManager);
 
         AtomicBoolean atomicBoolean = new AtomicBoolean(true);
         Thread thread = startServer(receiver, atomicBoolean);

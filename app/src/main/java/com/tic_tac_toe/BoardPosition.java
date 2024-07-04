@@ -37,24 +37,25 @@ public class BoardPosition implements IEventSubscriber<Keyboard> {
 
     @Override
     public void doNotify(Keyboard keyboard) {
-        String keyCode = keyboard.key();
-        switch (keyCode) {
-            case "71": // Up
-                y = Math.min(y + 1, 2);
-                break;
-            case "73": // Down
-                y = Math.max(y - 1, 0);
-                break;
-            case "70": // Left
-                x = Math.max(x - 1, 0);
-                break;
-            case "72": // Right
-                x = Math.min(x + 1, 2);
-                break;
-            default:
-                logger.log(Level.INFO, "Unhandled key code: {0}", keyCode);
-                break;
+        if (keyboard.type().equals("KeyPressed")) {
+            String keyCode = keyboard.key();
+            switch (keyCode) {
+                case "D": // Up
+                    y = Math.min(y + 1, 2);
+                    break;
+                case "A": // Down
+                    y = Math.max(y - 1, 0);
+                    break;
+                case "W": // Left
+                    x = Math.max(x - 1, 0);
+                    break;
+                case "S": // Right
+                    x = Math.min(x + 1, 2);
+                    break;
+                default:
+                    break;
+            }
+            board.setCurrentCell(x,y);
         }
-        board.changingSpriteHiddenByUserPosition(x,y);
     }
 }

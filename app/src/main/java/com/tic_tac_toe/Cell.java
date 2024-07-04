@@ -7,9 +7,11 @@ public class Cell {
     private Sprite sprite;
     private Coordinate coordinate;
     private Player player;
+    private String boardSquare;
 
-    public Cell(Coordinate coordinate) {
+    public Cell(Coordinate coordinate, String boardSquare) {
         this.coordinate = coordinate;
+        this.boardSquare = boardSquare;
     }
 
     public void setPlayer(Player player) {
@@ -22,6 +24,10 @@ public class Cell {
 
     public Coordinate getCoordinate() {
         return coordinate;
+    }
+
+    public String getBoardSquare() {
+        return boardSquare;
     }
 
     public void setSpriteHidden(boolean isHidden) {
