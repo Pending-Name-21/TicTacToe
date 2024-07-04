@@ -4,21 +4,39 @@ import com.bridge.renderHandler.sprite.Sprite;
 
 public class Cell {
 
-    private Sprite selectedSprite;
-    private char symbol;
-    public Cell(Sprite selectedSprite){
-        this.selectedSprite = selectedSprite;
-        this.selectedSprite.setHidden(true);
+    private Sprite sprite;
+    private Coordinate coordinate;
+    private Player player;
+
+    public Cell(Coordinate coordinate) {
+        this.coordinate = coordinate;
     }
 
-    public void setSymbol(char symbol){
-        this.symbol = symbol;
-    }
-    public void setSpriteHidden(boolean isHidden){
-        selectedSprite.setHidden(isHidden);
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 
-    public char getSymbol() {
-        return symbol;
+    public Player getPlayer() {
+        return player;
+    }
+
+    public Coordinate getCoordinate() {
+        return coordinate;
+    }
+
+    public void setSpriteHidden(boolean isHidden) {
+        sprite.setHidden(isHidden);
+    }
+
+    public void setSprite(Sprite sprite) {
+        this.sprite = sprite;
+    }
+
+    public void setCoordinate(Coordinate coordinate) {
+        this.coordinate = coordinate;
+    }
+
+    public Sprite getSprite() {
+        return sprite;
     }
 }

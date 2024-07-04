@@ -51,21 +51,29 @@ public class Board {
         builder.buildPath(Utils.BASE_PATH.concat("/board/selectedCells/Board-11.png"));
         Sprite sprite1 = builder.assemble();
 
-
         try {
             transmitter.send(new Frame(List.of(sprite1), List.of()));
         } catch (RenderException e) {
             throw new RuntimeException(e);
         }
 
+        int des = 225;
+        board[0][0] = new Cell(new Coordinate(-des, des));
+        board[0][1] = new Cell(new Coordinate(0, des));
+        board[0][2] = new Cell(new Coordinate(des, des));
+
+        board[1][0] = new Cell(new Coordinate(-des, 0));
+        board[1][1] = new Cell(new Coordinate(0, 0));
+        board[1][2] = new Cell(new Coordinate(des, 0));
+
+        board[2][0] = new Cell(new Coordinate(des, -des));
+        board[2][1] = new Cell(new Coordinate(0, -des));
+        board[2][2] = new Cell(new Coordinate(-des, -des));
+
     }
 
     public Cell[][] getBoard() {
         return board;
-    }
-
-    public void setBoard(Cell[][] board) {
-        this.board = board;
     }
 
 }
