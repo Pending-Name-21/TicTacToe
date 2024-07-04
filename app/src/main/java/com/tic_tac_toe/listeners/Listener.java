@@ -1,37 +1,30 @@
-package com.tic_tac_toe;
+package com.tic_tac_toe.listeners;
 
-import CoffeeTime.InputEvents.Keyboard;
 import com.bridge.core.exceptions.renderHandlerExceptions.NonExistentFilePathException;
-import com.bridge.core.exceptions.renderHandlerExceptions.RenderException;
 import com.bridge.ipc.SocketClient;
 import com.bridge.ipc.Transmitter;
-import com.bridge.processinputhandler.IEventSubscriber;
 import com.bridge.processinputhandler.KeyboardEventManager;
-import com.bridge.renderHandler.render.Frame;
-import com.bridge.renderHandler.repository.SpriteRepository;
-import com.bridge.renderHandler.builders.SpriteBuilder;
-import com.bridge.renderHandler.sprite.Sprite;
+import com.tic_tac_toe.handler.Board;
+import com.tic_tac_toe.handler.GameController;
 
 import java.io.IOException;
 import java.net.SocketAddress;
 import java.net.UnixDomainSocketAddress;
 import java.nio.channels.SocketChannel;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-
 
 public class Listener {
 
     private Transmitter transmitter;
     private KeyboardEventManager keyboardEventManager;
+    private final String SCREEN_SOCKET = "/tmp/socket_console";
 
     public Listener(KeyboardEventManager keyboardEventManager) {
         this.keyboardEventManager = keyboardEventManager;
     }
 
     private boolean isSocketRunning() {
-        Path socketPath = Path.of("/tmp/socket_console");
+        Path socketPath = Path.of(SCREEN_SOCKET);
         SocketAddress address = UnixDomainSocketAddress.of(socketPath);
 
         try (SocketChannel socketChannel = SocketChannel.open(address)) {
@@ -45,7 +38,7 @@ public class Listener {
         boolean successConnection = false;
         while (!successConnection) {
             if (isSocketRunning()) {
-                Path socketPath = Path.of("/tmp/socket_console");
+                Path socketPath = Path.of(SCREEN_SOCKET);
                 SocketClient socketClient = new SocketClient(socketPath);
                 transmitter = new Transmitter(socketClient);
                 Board board = new Board(transmitter);

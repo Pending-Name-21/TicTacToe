@@ -1,6 +1,11 @@
-package com.tic_tac_toe;
+package com.tic_tac_toe.listeners;
 
 import com.bridge.gamesettings.AGameSettings;
+import com.tic_tac_toe.handler.Board;
+import com.tic_tac_toe.model.Cell;
+import com.tic_tac_toe.model.winner.Winner;
+import com.tic_tac_toe.model.winner.WinnerLine;
+import com.tic_tac_toe.model.winner.WinnerPlayer;
 
 public class BoardValidator extends AGameSettings {
 

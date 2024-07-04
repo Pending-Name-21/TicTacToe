@@ -1,77 +1,61 @@
 package com.tic_tac_toe;
 
-import com.bridge.Game;
-import com.bridge.core.exceptions.GameException;
-import com.bridge.core.exceptions.renderHandlerExceptions.NonExistentFilePathException;
-import com.bridge.initializerhandler.GameInitializer;
-import com.bridge.gamesettings.AGameSettings;
+import com.bridge.ipc.Receiver;
+import com.bridge.ipc.SocketServer;
 import com.bridge.processinputhandler.InputVerifier;
 import com.bridge.processinputhandler.KeyboardEventManager;
-import com.bridge.renderHandler.render.RenderManager;
-import com.bridge.renderHandler.repository.SoundRepository;
-import com.bridge.renderHandler.repository.SpriteRepository;
-import com.bridge.updatehandler.UpdatePublisher;
+import com.tic_tac_toe.listeners.Listener;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
-
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class App {
 
-    public static void main(String[] args) throws NonExistentFilePathException {
-        /*Path socketPath = Path.of("/tmp/socket_console");
-        SocketClient socketClient = new SocketClient(socketPath);
-        Transmitter transmitter = new Transmitter(socketClient);
+    public static final Path NAMESPACE =
+            Path.of(System.getProperty("java.io.tmpdir"), "test-events-socket.sock");
 
-        try {
-            Size size = new Size(50, 50);
-            Sound sound = new Sound(Paths.get(""));
-            sound.setPlaying(false);
+    public static void main(String[] args) {
+        KeyboardEventManager keyboardEventManager = new KeyboardEventManager();
+        Listener listener = new Listener(keyboardEventManager);
+        Receiver receiver = new Receiver();
+        receiver.addBuffer(keyboardEventManager);
 
-            Coord position1 = new Coord(0, 0);
-            Sprite sprite = new Sprite(position1, 0,size, Paths.get("/home/fundacion/University/Fifth/SoftwareDevelopment/images/x.jpg"));
-            Frame frame = new Frame(List.of(sprite), List.of(sound));
-            transmitter.send(frame);
+        AtomicBoolean atomicBoolean = new AtomicBoolean(true);
+        Thread thread = startServer(receiver, atomicBoolean);
 
-            Coord position2 = new Coord(50, 50);
-            sprite = new Sprite(position2, 0, size, Paths.get("/home/fundacion/University/Fifth/SoftwareDevelopment/images/o.png"));
-            frame = new Frame(List.of(sprite), List.of(sound));
-            transmitter.send(frame);
+        listener.startConnection();
 
-        } catch (RenderException e) {
-            throw new RuntimeException(e);
-        }*/
+        InputVerifier verifier = new InputVerifier(List.of(keyboardEventManager));
 
-        runGame(makeGame(new SpriteRepository(), new SoundRepository()));
-
-
-        /*SpriteRepository spriteRepository = new SpriteRepository();
-        KeyboardEventManager keyboardSuscriber = new KeyboardEventManager();
-
-        Board board = new Board(spriteRepository);
-        BoardPosition boardPosition = new BoardPosition(board);
-        BoardValidator validator = new BoardValidator(board);
-        GameController gameController = new GameController(board, validator, boardPosition);*/
-    }
-
-    public static Game makeGame(SpriteRepository spriteRepository, SoundRepository soundRepository){
-        KeyboardEventManager manager = new KeyboardEventManager();
-//        AbstractListener listener = new AbstractListener();
-//        manager.subscribe(listener);
-        InputVerifier inputVerifier = new InputVerifier(List.of(manager));
-        AGameSettings gameSettings = new AGameSettings() {
-            @Override
-            public boolean isGameOver() {
-                return false;
+        while (true) {
+            verifier.check();
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        };
-        return new Game(inputVerifier, gameSettings, new UpdatePublisher(), new RenderManager(spriteRepository, soundRepository), new GameInitializer());
+        }
     }
 
-    public static void runGame(Game game) {
+    public static Thread startServer(Receiver receiver, AtomicBoolean atomicBoolean) {
         try {
-            game.run();
-        } catch (GameException e) {
+            Files.deleteIfExists(NAMESPACE);
+        } catch (IOException e) {
             e.printStackTrace();
         }
+        SocketServer socketServer = new SocketServer(receiver, NAMESPACE, atomicBoolean);
+        Thread thread = new Thread(socketServer);
+        thread.start();
+        while (!Files.exists(NAMESPACE)) {
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                thread.interrupt();
+            }
+        }
+        return thread;
     }
 }

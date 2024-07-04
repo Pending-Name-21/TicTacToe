@@ -1,14 +1,14 @@
-package com.tic_tac_toe;
+package com.tic_tac_toe.handler;
 
 import com.bridge.core.exceptions.renderHandlerExceptions.NonExistentFilePathException;
-import com.bridge.core.exceptions.renderHandlerExceptions.RenderException;
 import com.bridge.ipc.Transmitter;
 import com.bridge.renderHandler.builders.SpriteBuilder;
-import com.bridge.renderHandler.render.Frame;
 import com.bridge.renderHandler.repository.SpriteRepository;
-import com.bridge.renderHandler.sprite.Sprite;
+import com.tic_tac_toe.model.Cell;
+import com.tic_tac_toe.model.Coordinate;
+import com.tic_tac_toe.utils.SourcePaths;
 
-import java.util.List;
+import java.util.Arrays;
 
 public class Board {
 
@@ -29,7 +29,7 @@ public class Board {
             currentCell = board[x][y];
 
            /* builder = new SpriteBuilder(boardRepository);
-            builder.buildSize(Utils.HEIGHT_APP, Utils.WIDTH_APP);
+            builder.buildSize(Sizes.HEIGHT_APP, Sizes.WIDTH_APP);
             builder.buildCoord(0, 0);
             try {
                 builder.buildPath(currentCell.getBoardSquare());
@@ -48,7 +48,7 @@ public class Board {
 
     public void initBoard() throws NonExistentFilePathException {
         /*builder = new SpriteBuilder(boardRepository);
-        builder.buildSize(Utils.HEIGHT_APP, Utils.WIDTH_APP);
+        builder.buildSize(Sizes.HEIGHT_APP, Sizes.WIDTH_APP);
         builder.buildCoord(0, 0);
         builder.buildPath(Utils.BASE_PATH.concat("/board/selectedCells/Board-11.png"));
         Sprite sprite1 = builder.assemble();
@@ -60,17 +60,35 @@ public class Board {
         }*/
 
         int des = 225;
-        board[0][0] = new Cell(new Coordinate(-des, des), Utils.BASE_PATH.concat("/board/selectedCells/Board-11.png"));
-        board[0][1] = new Cell(new Coordinate(0, des), Utils.BASE_PATH.concat("/board/selectedCells/Board-12.png"));
-        board[0][2] = new Cell(new Coordinate(des, des), Utils.BASE_PATH.concat("/board/selectedCells/Board-13.png"));
+        board[0][0] = new Cell(
+                new Coordinate(-des, des),
+                SourcePaths.BASE_PATH.concat("/board/selectedCells/Board-11.png"));
+        board[0][1] = new Cell(
+                new Coordinate(0, des),
+                SourcePaths.BASE_PATH.concat("/board/selectedCells/Board-12.png"));
+        board[0][2] = new Cell(
+                new Coordinate(des, des),
+                SourcePaths.BASE_PATH.concat("/board/selectedCells/Board-13.png"));
 
-        board[1][0] = new Cell(new Coordinate(-des, 0), Utils.BASE_PATH.concat("/board/selectedCells/Board-21.png"));
-        board[1][1] = new Cell(new Coordinate(0, 0), Utils.BASE_PATH.concat("/board/selectedCells/Board-22.png"));
-        board[1][2] = new Cell(new Coordinate(des, 0), Utils.BASE_PATH.concat("/board/selectedCells/Board-23.png"));
+        board[1][0] = new Cell(
+                new Coordinate(-des, 0),
+                SourcePaths.BASE_PATH.concat("/board/selectedCells/Board-21.png"));
+        board[1][1] = new Cell(
+                new Coordinate(0, 0),
+                SourcePaths.BASE_PATH.concat("/board/selectedCells/Board-22.png"));
+        board[1][2] = new Cell(
+                new Coordinate(des, 0),
+                SourcePaths.BASE_PATH.concat("/board/selectedCells/Board-23.png"));
 
-        board[2][0] = new Cell(new Coordinate(-des, -des), Utils.BASE_PATH.concat("/board/selectedCells/Board-31.png"));
-        board[2][1] = new Cell(new Coordinate(0, -des), Utils.BASE_PATH.concat("/board/selectedCells/Board-32.png"));
-        board[2][2] = new Cell(new Coordinate(des, -des), Utils.BASE_PATH.concat("/board/selectedCells/Board-33.png"));
+        board[2][0] = new Cell(
+                new Coordinate(-des, -des),
+                SourcePaths.BASE_PATH.concat("/board/selectedCells/Board-31.png"));
+        board[2][1] = new Cell(
+                new Coordinate(0, -des),
+                SourcePaths.BASE_PATH.concat("/board/selectedCells/Board-32.png"));
+        board[2][2] = new Cell(
+                new Coordinate(des, -des),
+                SourcePaths.BASE_PATH.concat("/board/selectedCells/Board-33.png"));
 
         currentCell = board[0][0];
     }
@@ -81,5 +99,12 @@ public class Board {
 
     public Cell getCurrentCell() {
         return currentCell;
+    }
+
+    public void printBoard() {
+        for (Cell[] cells : board) {
+            System.out.println(Arrays.toString(cells));
+        }
+        System.out.println();
     }
 }

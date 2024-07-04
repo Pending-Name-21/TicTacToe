@@ -1,9 +1,9 @@
-package com.tic_tac_toe;
+package com.tic_tac_toe.listeners;
 
 import CoffeeTime.InputEvents.Keyboard;
 import com.bridge.processinputhandler.IEventSubscriber;
+import com.tic_tac_toe.handler.Board;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class BoardPosition implements IEventSubscriber<Keyboard> {

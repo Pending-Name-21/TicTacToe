@@ -1,4 +1,4 @@
-package com.tic_tac_toe;
+package com.tic_tac_toe.model;
 
 public class Coordinate {
 
