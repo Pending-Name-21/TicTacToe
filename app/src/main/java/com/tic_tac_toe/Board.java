@@ -29,7 +29,7 @@ public class Board {
             currentCell = board[x][y];
 
            /* builder = new SpriteBuilder(boardRepository);
-            builder.buildSize(600, 800);
+            builder.buildSize(Utils.HEIGHT_APP, Utils.WIDTH_APP);
             builder.buildCoord(0, 0);
             try {
                 builder.buildPath(currentCell.getBoardSquare());
@@ -48,7 +48,7 @@ public class Board {
 
     public void initBoard() throws NonExistentFilePathException {
         /*builder = new SpriteBuilder(boardRepository);
-        builder.buildSize(600, 800);
+        builder.buildSize(Utils.HEIGHT_APP, Utils.WIDTH_APP);
         builder.buildCoord(0, 0);
         builder.buildPath(Utils.BASE_PATH.concat("/board/selectedCells/Board-11.png"));
         Sprite sprite1 = builder.assemble();

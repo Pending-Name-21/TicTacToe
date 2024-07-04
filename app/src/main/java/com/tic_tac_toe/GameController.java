@@ -20,6 +20,7 @@ public class GameController implements IEventSubscriber<Keyboard> {
 
     private Player currentPlayer;
     private Board board;
+    private BoardValidator boardValidator;
     private Transmitter transmitter;
     private static final Logger logger = Logger.getLogger(GameController.class.getName());
     private final int SYM_SIZE_W = 235;
@@ -27,8 +28,9 @@ public class GameController implements IEventSubscriber<Keyboard> {
     private Queue<String> pathsO;
     private Queue<String> pathsX;
 
-    public GameController(Board board, Transmitter transmitter) {
+    public GameController(Board board, BoardValidator boardValidator, Transmitter transmitter) {
         this.board = board;
+        this.boardValidator = boardValidator;
         this.transmitter = transmitter;
         pathsO = new LinkedList<>(List.of("/home/fundacion/University/Fifth/SoftwareDevelopment/TicTacToe/app/src/main/java/com/tic_tac_toe/Images/assets/general/osymbola.png",
                 "/home/fundacion/University/Fifth/SoftwareDevelopment/TicTacToe/app/src/main/java/com/tic_tac_toe/Images/assets/general/osymbolb.png",
@@ -92,6 +94,49 @@ public class GameController implements IEventSubscriber<Keyboard> {
                     throw new RuntimeException(e);
                 }
                 switchPlayer();
+
+                boolean wasFinished = boardValidator.isGameOver();
+                if (wasFinished) {
+                    builder = new SpriteBuilder(new SpriteRepository());
+                    builder.buildSize(Utils.HEIGHT_APP, Utils.WIDTH_APP);
+                    builder.buildCoord(0, 0);
+                    try {
+                        builder.buildPath(boardValidator.getWinner().getWinnerLine());
+                    } catch (NonExistentFilePathException e) {
+                        throw new RuntimeException(e);
+                    }
+                    sprite = builder.assemble();
+                    sprite.setZ_index(4);
+
+                    try {
+                        transmitter.send(new Frame(List.of(sprite), List.of()));
+                    } catch (RenderException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    builder = new SpriteBuilder(new SpriteRepository());
+                    builder.buildSize(Utils.HEIGHT_APP, Utils.WIDTH_APP);
+                    builder.buildCoord(0, 0);
+                    try {
+                        builder.buildPath(boardValidator.getWinner().getWinnerPlayer());
+                    } catch (NonExistentFilePathException e) {
+                        throw new RuntimeException(e);
+                    }
+                    sprite = builder.assemble();
+                    sprite.setZ_index(4);
+
+                    try {
+                        transmitter.send(new Frame(List.of(sprite), List.of()));
+                    } catch (RenderException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                }
                 for (Cell[] cells : board.getBoard()) {
                     System.out.println(Arrays.toString(cells));
                 }

@@ -54,8 +54,9 @@ public class Listener {
                 } catch (NonExistentFilePathException e) {
                     throw new RuntimeException(e);
                 }
+                BoardValidator boardValidator = new BoardValidator(board);
                 keyboardEventManager.subscribe(new BoardPosition(board));
-                keyboardEventManager.subscribe(new GameController(board, transmitter));
+                keyboardEventManager.subscribe(new GameController(board, boardValidator, transmitter));
                 successConnection = true;
             } else {
                 try {

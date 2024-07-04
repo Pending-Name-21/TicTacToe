@@ -5,6 +5,7 @@ import com.bridge.gamesettings.AGameSettings;
 public class BoardValidator extends AGameSettings {
 
     private Board board;
+    private Winner winner;
 
     public BoardValidator(Board board) {
         this.board = board;
@@ -12,40 +13,52 @@ public class BoardValidator extends AGameSettings {
 
     @Override
     public boolean isGameOver() {
-        String result = checkWinner();
-        if (!result.isEmpty()) {
+        winner = checkWinner();
+        if (winner != null) {
             System.out.println("_____________________WINNER_____________________");
+            System.out.println(winner);
+            System.out.println("________________________________________________");
         }
-        return !result.isEmpty();
+
+        return winner != null;
     }
 
-    public String checkWinner() {
+    public Winner getWinner() {
+        return winner;
+    }
+
+    private String getPlayerWin(char symbol) {
+        return symbol == 'X'
+                ? WinnerPlayer.WINNER_PLAYER_X.getPath()
+                : WinnerPlayer.WINNER_PLAYER_O.getPath();
+    }
+
+    public Winner checkWinner() {
         Cell[][] gameBoard = board.getBoard();
         int size = gameBoard.length;
-        String result = "";
 
         // Check rows
         for (int i = 0; i < size; i++) {
             if (gameBoard[i][0] != null && gameBoard[i][1] != null && gameBoard[i][2] != null) {
-                char symbol0 = gameBoard[i][0].getPlayer().getSymbol();
-                char symbol1 = gameBoard[i][1].getPlayer().getSymbol();
-                char symbol2 = gameBoard[i][2].getPlayer().getSymbol();
+                char symbol0 = gameBoard[i][0].wasUsed() ? gameBoard[i][0].getPlayer().getSymbol() : '\0';
+                char symbol1 = gameBoard[i][1].wasUsed() ? gameBoard[i][1].getPlayer().getSymbol() : '\0';
+                char symbol2 = gameBoard[i][2].wasUsed() ? gameBoard[i][2].getPlayer().getSymbol() : '\0';
                 if (symbol0 != '\0' && symbol0 == symbol1 && symbol1 == symbol2) {
-                    result = "Row " + (i + 1);
+                    winner = new Winner(WinnerLine.ROW.getPath(i), getPlayerWin(symbol0));
                     break;
                 }
             }
         }
 
         // Check columns
-        if (result.isEmpty()) {
+        if (winner == null) {
             for (int i = 0; i < size; i++) {
                 if (gameBoard[0][i] != null && gameBoard[1][i] != null && gameBoard[2][i] != null) {
-                    char symbol0 = gameBoard[0][i].getPlayer().getSymbol();
-                    char symbol1 = gameBoard[1][i].getPlayer().getSymbol();
-                    char symbol2 = gameBoard[2][i].getPlayer().getSymbol();
+                    char symbol0 = gameBoard[0][i].wasUsed() ? gameBoard[0][i].getPlayer().getSymbol() : '\0';
+                    char symbol1 = gameBoard[1][i].wasUsed() ? gameBoard[1][i].getPlayer().getSymbol() : '\0';
+                    char symbol2 = gameBoard[2][i].wasUsed() ? gameBoard[2][i].getPlayer().getSymbol() : '\0';
                     if (symbol0 != '\0' && symbol0 == symbol1 && symbol1 == symbol2) {
-                        result = "Column " + (i + 1);
+                        winner = new Winner(WinnerLine.COLUMN.getPath(i), getPlayerWin(symbol0));
                         break;
                     }
                 }
@@ -53,28 +66,30 @@ public class BoardValidator extends AGameSettings {
         }
 
         // Check diagonals
-        if (result.isEmpty()) {
+        if (winner == null) {
             if (gameBoard[0][0] != null && gameBoard[1][1] != null && gameBoard[2][2] != null) {
-                char symbol0 = gameBoard[0][0].getPlayer().getSymbol();
-                char symbol1 = gameBoard[1][1].getPlayer().getSymbol();
-                char symbol2 = gameBoard[2][2].getPlayer().getSymbol();
+                char symbol0 = gameBoard[0][0].wasUsed() ? gameBoard[0][0].getPlayer().getSymbol() : '\0';
+                char symbol1 = gameBoard[1][1].wasUsed() ? gameBoard[1][1].getPlayer().getSymbol() : '\0';
+                char symbol2 = gameBoard[2][2].wasUsed() ? gameBoard[2][2].getPlayer().getSymbol() : '\0';
                 if (symbol0 != '\0' && symbol0 == symbol1 && symbol1 == symbol2) {
-                    result = "Diagonal 1";
+                    winner = new Winner(WinnerLine.DIAGONAL.getPath(0), getPlayerWin(symbol0));
+                    return winner;
                 }
             }
         }
 
-        if (result.isEmpty()) {
+        if (winner == null) {
             if (gameBoard[0][2] != null && gameBoard[1][1] != null && gameBoard[2][0] != null) {
-                char symbol0 = gameBoard[0][2].getPlayer().getSymbol();
-                char symbol1 = gameBoard[1][1].getPlayer().getSymbol();
-                char symbol2 = gameBoard[2][0].getPlayer().getSymbol();
+                char symbol0 = gameBoard[0][2].wasUsed() ? gameBoard[0][2].getPlayer().getSymbol() : '\0';
+                char symbol1 = gameBoard[1][1].wasUsed() ? gameBoard[1][1].getPlayer().getSymbol() : '\0';
+                char symbol2 = gameBoard[2][0].wasUsed() ? gameBoard[2][0].getPlayer().getSymbol() : '\0';
                 if (symbol0 != '\0' && symbol0 == symbol1 && symbol1 == symbol2) {
-                    result = "Diagonal 2";
+                    winner = new Winner(WinnerLine.DIAGONAL.getPath(1), getPlayerWin(symbol0));
+                    return winner;
                 }
             }
         }
 
-        return result;
+        return winner;
     }
 }

@@ -4,8 +4,6 @@ import com.bridge.ipc.Receiver;
 import com.bridge.ipc.SocketServer;
 import com.bridge.processinputhandler.InputVerifier;
 import com.bridge.processinputhandler.KeyboardEventManager;
-import com.bridge.processinputhandler.MouseEventManager;
-import com.tic_tac_toe.Listener;
 
 import java.io.IOException;
 import java.nio.file.Files;
