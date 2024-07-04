@@ -1,60 +1,65 @@
 package com.tic_tac_toe;
 
 import com.bridge.core.exceptions.renderHandlerExceptions.NonExistentFilePathException;
+import com.bridge.core.exceptions.renderHandlerExceptions.RenderException;
+import com.bridge.ipc.Transmitter;
 import com.bridge.renderHandler.builders.SpriteBuilder;
+import com.bridge.renderHandler.render.Frame;
 import com.bridge.renderHandler.repository.SpriteRepository;
-import com.bridge.renderHandler.sprite.*;
 import com.bridge.renderHandler.sprite.Sprite;
 
-public class Board{
-    private SpriteBuilder builder;
+import java.util.List;
+
+public class Board {
+
     private Cell[][] board;
     private Cell currentCell;
+    private SpriteBuilder builder;
+    private Transmitter transmitter;
+    private SpriteRepository boardRepository;
+    private final int SYM_SIZE_W = 235;
+    private final int SYM_SIZE_H = 200;
 
-    public Board(SpriteRepository repository) throws NonExistentFilePathException {
+    public Board(Transmitter transmitter) {
+        this.transmitter = transmitter;
         this.board = new Cell[3][3];
-        builder = new SpriteBuilder(repository);
-        builder.buildSize(5,5);
-        builder.buildCoord(0,0);
-        builder.buildPath("/com/tic_tac_toe/Images/board/EmptyBoard.png");
-        initializeSprites();
+        this.boardRepository = new SpriteRepository();
     }
 
+    public void placeSymbol(int x, int y, Player player) throws NonExistentFilePathException {
+        builder.buildSize(SYM_SIZE_H, SYM_SIZE_W);
+        builder.buildCoord(x, y);
+        builder.buildPath(player == Player.PLAYER_X
+                ? Utils.BASE_PATH.concat("/assets/general/X.png")
+                : Utils.BASE_PATH.concat("/assets/general/O.png"));
+        Sprite sprite = builder.assemble();
+        sprite.setZ_index(3);
 
-    void placeSymbol(int x, int y, Player player) throws NonExistentFilePathException {
-
-        builder.buildSize(5,5);
-        builder.buildCoord(x,y);
-        builder.buildPath(player.getSymbol() == 'X' ? "com/tic_tac_toe/Images/assets/general/X.png" : "com/tic_tac_toe/Images/assets/general/O.png");
-        builder.assemble().setZ_index(3);
-
-        board[x][y].setSymbol(player.getSymbol());
+        board[x][y].setPlayer(player);
     }
-    public void changingSpriteHiddenByUserPosition(int x, int y){
+
+    public void changingSpriteHiddenByUserPosition(int x, int y) {
         currentCell.setSpriteHidden(true);
         currentCell = board[x][y];
         currentCell.setSpriteHidden(false);
     }
 
-    private void initializeSprites() throws NonExistentFilePathException {
-        String basePath = "com/tic_tac_toe/Images/assets/specificSelectedSquare/BoardSelected";
+    public void initBoard() throws NonExistentFilePathException {
+        builder = new SpriteBuilder(boardRepository);
+        builder.buildSize(600, 800);
+        builder.buildCoord(0, 0);
+        builder.buildPath(Utils.BASE_PATH.concat("/board/selectedCells/Board-11.png"));
+        Sprite sprite1 = builder.assemble();
 
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                String imagePath = basePath + (i + 1) + (j + 1) + ".png";
 
-                builder.buildCoord(i, j);
-                builder.buildSize(5, 5);
-                builder.buildPath(imagePath);
-                Sprite sprite = builder.assemble();
-                sprite.setZ_index(2);
-                board[i][j] = new Cell(sprite);
-            }
+        try {
+            transmitter.send(new Frame(List.of(sprite1), List.of()));
+        } catch (RenderException e) {
+            throw new RuntimeException(e);
         }
 
-        currentCell = board[0][0];
-        currentCell.setSpriteHidden(false);
     }
+
     public Cell[][] getBoard() {
         return board;
     }
@@ -62,4 +67,5 @@ public class Board{
     public void setBoard(Cell[][] board) {
         this.board = board;
     }
+
 }

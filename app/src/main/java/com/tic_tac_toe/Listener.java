@@ -23,7 +23,6 @@ import java.util.List;
 public class Listener implements IEventSubscriber<Keyboard> {
 
     private Transmitter transmitter;
-    private final String BASE_PATH = "/home/fundacion/University/Fifth/SoftwareDevelopment/TicTacToe/app/src/main/java/com/tic_tac_toe/Images";
 
     private boolean isSocketRunning() {
         Path socketPath = Path.of("/tmp/socket_console");
@@ -45,7 +44,7 @@ public class Listener implements IEventSubscriber<Keyboard> {
                 transmitter = new Transmitter(socketClient);
                 Board board = new Board(transmitter);
                 try {
-                    board.initializeSprites();
+                    board.initBoard();
                 } catch (NonExistentFilePathException e) {
                     throw new RuntimeException(e);
                 }
@@ -72,7 +71,7 @@ public class Listener implements IEventSubscriber<Keyboard> {
                 builder.buildSize(600, 800);
                 builder.buildCoord(0, 0);
                 try {
-                    builder.buildPath(BASE_PATH + "/board/selectedCells/Board-21.png");
+                    builder.buildPath(Utils.BASE_PATH + "/board/selectedCells/Board-21.png");
                 } catch (NonExistentFilePathException e) {
                     throw new RuntimeException(e);
                 }
