@@ -34,4 +34,9 @@ public class Cell {
     public boolean wasUsed() {
         return player != null;
     }
+
+    @Override
+    public String toString() {
+        return player != null ? player.getSymbol() + "" : "_";
+    }
 }

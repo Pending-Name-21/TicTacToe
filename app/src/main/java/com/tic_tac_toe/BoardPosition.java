@@ -55,6 +55,9 @@ public class BoardPosition implements IEventSubscriber<Keyboard> {
                 default:
                     break;
             }
+            System.out.println("--------------------");
+            System.out.printf("%d, %d\n", x, y);
+            System.out.println("--------------------");
             board.setCurrentCell(x,y);
         }
     }
