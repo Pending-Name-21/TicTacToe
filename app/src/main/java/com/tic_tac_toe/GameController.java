@@ -97,33 +97,37 @@ public class GameController implements IEventSubscriber<Keyboard> {
 
                 boolean wasFinished = boardValidator.isGameOver();
                 if (wasFinished) {
+                    Winner winner = boardValidator.getWinner();
+                    if (!winner.getWinnerLine().isEmpty()) {
+                        builder = new SpriteBuilder(new SpriteRepository());
+                        builder.buildSize(Utils.HEIGHT_APP, Utils.WIDTH_APP);
+                        builder.buildCoord(0, 0);
+                        try {
+                            builder.buildPath(winner.getWinnerLine());
+                        } catch (NonExistentFilePathException e) {
+                            throw new RuntimeException(e);
+                        }
+                        sprite = builder.assemble();
+                        sprite.setZ_index(4);
+
+                        try {
+                            transmitter.send(new Frame(List.of(sprite), List.of()));
+                        } catch (RenderException e) {
+                            throw new RuntimeException(e);
+                        }
+
+                        try {
+                            Thread.sleep(2000);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+
                     builder = new SpriteBuilder(new SpriteRepository());
                     builder.buildSize(Utils.HEIGHT_APP, Utils.WIDTH_APP);
                     builder.buildCoord(0, 0);
                     try {
-                        builder.buildPath(boardValidator.getWinner().getWinnerLine());
-                    } catch (NonExistentFilePathException e) {
-                        throw new RuntimeException(e);
-                    }
-                    sprite = builder.assemble();
-                    sprite.setZ_index(4);
-
-                    try {
-                        transmitter.send(new Frame(List.of(sprite), List.of()));
-                    } catch (RenderException e) {
-                        throw new RuntimeException(e);
-                    }
-
-                    try {
-                        Thread.sleep(2000);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                    builder = new SpriteBuilder(new SpriteRepository());
-                    builder.buildSize(Utils.HEIGHT_APP, Utils.WIDTH_APP);
-                    builder.buildCoord(0, 0);
-                    try {
-                        builder.buildPath(boardValidator.getWinner().getWinnerPlayer());
+                        builder.buildPath(winner.getWinnerPlayer());
                     } catch (NonExistentFilePathException e) {
                         throw new RuntimeException(e);
                     }

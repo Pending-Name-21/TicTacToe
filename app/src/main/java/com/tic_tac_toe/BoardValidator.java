@@ -90,6 +90,22 @@ public class BoardValidator extends AGameSettings {
             }
         }
 
+        // Check for a tie
+        boolean isTie = true;
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (!gameBoard[i][j].wasUsed()) {
+                    isTie = false;
+                    break;
+                }
+            }
+            if (!isTie) break;
+        }
+
+        if (isTie) {
+            winner = new Winner("", WinnerPlayer.TIE.getPath());
+        }
+
         return winner;
     }
 }
