@@ -17,25 +17,11 @@ public class Board {
     private SpriteBuilder builder;
     private Transmitter transmitter;
     private SpriteRepository boardRepository;
-    private final int SYM_SIZE_W = 235;
-    private final int SYM_SIZE_H = 200;
 
     public Board(Transmitter transmitter) {
         this.transmitter = transmitter;
         this.board = new Cell[3][3];
         this.boardRepository = new SpriteRepository();
-    }
-
-    public void placeSymbol(int x, int y, Player player) throws NonExistentFilePathException {
-        builder.buildSize(SYM_SIZE_H, SYM_SIZE_W);
-        builder.buildCoord(x, y);
-        builder.buildPath(player == Player.PLAYER_X
-                ? Utils.BASE_PATH.concat("/assets/general/X.png")
-                : Utils.BASE_PATH.concat("/assets/general/O.png"));
-        Sprite sprite = builder.assemble();
-        sprite.setZ_index(3);
-
-        board[x][y].setPlayer(player);
     }
 
     public void setCurrentCell(int x, int y) {

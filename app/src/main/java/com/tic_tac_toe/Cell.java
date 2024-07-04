@@ -1,10 +1,7 @@
 package com.tic_tac_toe;
 
-import com.bridge.renderHandler.sprite.Sprite;
-
 public class Cell {
 
-    private Sprite sprite;
     private Coordinate coordinate;
     private Player player;
     private String boardSquare;
@@ -30,19 +27,11 @@ public class Cell {
         return boardSquare;
     }
 
-    public void setSpriteHidden(boolean isHidden) {
-        sprite.setHidden(isHidden);
-    }
-
-    public void setSprite(Sprite sprite) {
-        this.sprite = sprite;
-    }
-
     public void setCoordinate(Coordinate coordinate) {
         this.coordinate = coordinate;
     }
 
-    public Sprite getSprite() {
-        return sprite;
+    public boolean wasUsed() {
+        return player != null;
     }
 }

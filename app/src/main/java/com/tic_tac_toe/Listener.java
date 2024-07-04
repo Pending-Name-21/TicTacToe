@@ -55,6 +55,7 @@ public class Listener {
                     throw new RuntimeException(e);
                 }
                 keyboardEventManager.subscribe(new BoardPosition(board));
+                keyboardEventManager.subscribe(new GameController(board, transmitter));
                 successConnection = true;
             } else {
                 try {
