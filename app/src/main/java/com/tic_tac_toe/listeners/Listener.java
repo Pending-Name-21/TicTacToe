@@ -17,7 +17,7 @@ import java.nio.file.Path;
 public class Listener {
 
     private Transmitter transmitter;
-    private KeyboardEventManager keyboardEventManager;
+    private final KeyboardEventManager keyboardEventManager;
     private final String SCREEN_SOCKET = "/tmp/socket_console";
 
     public Listener(KeyboardEventManager keyboardEventManager) {
@@ -46,8 +46,6 @@ public class Listener {
                 try {
                     board.initBoard();
                 } catch (NonExistentFilePathException e) {
-                    throw new RuntimeException(e);
-                } catch (RenderException e) {
                     throw new RuntimeException(e);
                 }
                 BoardValidator boardValidator = new BoardValidator(board);

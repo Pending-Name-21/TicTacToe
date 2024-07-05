@@ -1,7 +1,6 @@
 package com.tic_tac_toe.model;
 
 public class Cell {
-
     private Coordinate coordinate;
     private Player player;
     private String boardSquare;

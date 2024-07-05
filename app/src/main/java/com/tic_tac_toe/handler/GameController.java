@@ -91,9 +91,6 @@ public class GameController implements IEventSubscriber<Keyboard> {
                     throw new RuntimeException(e);
                 }
                 Sprite sprite = builder.assemble();
-                Frame frame = new Frame(List.of(sprite), List.of());
-                System.out.println(sprite.getPath());
-                System.out.println(frame.sprites());
 
                 try {
                     transmitter.send(new Frame(List.of(sprite), List.of()));
@@ -104,7 +101,6 @@ public class GameController implements IEventSubscriber<Keyboard> {
                 board.getCurrentCell().setPlayer(currentPlayer);
                 switchPlayer();
                 checkGameState();
-                board.printBoard();
             }
         }
     }

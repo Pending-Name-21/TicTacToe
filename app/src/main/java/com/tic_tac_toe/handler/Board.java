@@ -6,32 +6,21 @@ import com.bridge.ipc.Transmitter;
 import com.bridge.renderHandler.builders.SpriteBuilder;
 import com.bridge.renderHandler.render.Frame;
 import com.bridge.renderHandler.repository.SpriteRepository;
-import com.bridge.renderHandler.sprite.Coord;
-import com.bridge.renderHandler.sprite.Size;
 import com.bridge.renderHandler.sprite.Sprite;
 import com.tic_tac_toe.model.Cell;
 import com.tic_tac_toe.model.Coordinate;
 import com.tic_tac_toe.utils.SourcePaths;
-import java.nio.file.Path;
-
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Board {
 
-    private Cell[][] board;
+    private final Cell[][] board;
     private Cell currentCell;
-    private SpriteBuilder builder;
-    private Transmitter transmitter;
-    private SpriteRepository boardRepository;
-
+    private final Transmitter transmitter;
 
     public Board(Transmitter transmitter) {
         this.transmitter = transmitter;
         this.board = new Cell[3][3];
-        this.boardRepository = new SpriteRepository();
     }
 
     public void setCurrentCell(int x, int y) {
@@ -110,12 +99,5 @@ public class Board {
 
     public Cell getCurrentCell() {
         return currentCell;
-    }
-
-    public void printBoard() {
-        for (Cell[] cells : board) {
-            System.out.println(Arrays.toString(cells));
-        }
-        System.out.println();
     }
 }

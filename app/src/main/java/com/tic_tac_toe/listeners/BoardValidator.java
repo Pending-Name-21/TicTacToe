@@ -19,12 +19,6 @@ public class BoardValidator extends AGameSettings {
     @Override
     public boolean isGameOver() {
         winner = checkWinner();
-        if (winner != null) {
-            System.out.println("_____________________WINNER_____________________");
-            System.out.println(winner);
-            System.out.println("________________________________________________");
-        }
-
         return winner != null;
     }
 

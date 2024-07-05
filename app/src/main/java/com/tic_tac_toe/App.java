@@ -24,7 +24,7 @@ public class App {
         receiver.addBuffer(keyboardEventManager);
 
         AtomicBoolean atomicBoolean = new AtomicBoolean(true);
-        Thread thread = startServer(receiver, atomicBoolean);
+        startServer(receiver, atomicBoolean);
 
         listener.startConnection();
 
@@ -40,7 +40,7 @@ public class App {
         }
     }
 
-    public static Thread startServer(Receiver receiver, AtomicBoolean atomicBoolean) {
+    public static void startServer(Receiver receiver, AtomicBoolean atomicBoolean) {
         try {
             Files.deleteIfExists(NAMESPACE);
         } catch (IOException e) {
@@ -56,6 +56,5 @@ public class App {
                 thread.interrupt();
             }
         }
-        return thread;
     }
 }
