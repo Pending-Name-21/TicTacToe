@@ -7,6 +7,3 @@ build
 # IntelliJ
 out/
 .idea/**
-
-# Ignore local dependencies
-app/local/
