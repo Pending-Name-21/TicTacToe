@@ -46,11 +46,12 @@ public class Listener {
         Path socketPath = Path.of(SCREEN_SOCKET);
         SocketClient socketClient = new SocketClient(socketPath);
         transmitter = new Transmitter(socketClient);
-        Board board = new Board(transmitter);
-        board.initBoard();
+        Board board = new Board();
+//        board.initBoard();
+
         BoardValidator boardValidator = new BoardValidator(board);
         keyboardEventManager.subscribe(new BoardPosition(board));
-        keyboardEventManager.subscribe(new GameController(board, boardValidator, transmitter));
+//        keyboardEventManager.subscribe(new GameController(board, boardValidator));
     }
 
     public void startConnection() {

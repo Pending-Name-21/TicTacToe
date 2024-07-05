@@ -1,13 +1,21 @@
 package com.tic_tac_toe.model;
 
+import com.bridge.core.exceptions.renderHandlerExceptions.NonExistentFilePathException;
+import com.bridge.renderHandler.builders.SpriteBuilder;
+import com.bridge.renderHandler.sprite.Sprite;
+
 public class Cell {
     private Coordinate coordinate;
     private Player player;
     private String boardSquare;
+    private Sprite cellSprite;
+    private SpriteBuilder spriteBuilder;
 
-    public Cell(Coordinate coordinate, String boardSquare) {
+    public Cell(Coordinate coordinate, Sprite cellSprite) {
         this.coordinate = coordinate;
-        this.boardSquare = boardSquare;
+//        this.boardSquare = boardSquare;
+        this.cellSprite = cellSprite;
+
     }
 
     public void setPlayer(Player player) {
@@ -23,7 +31,7 @@ public class Cell {
     }
 
     public String getBoardSquare() {
-        return boardSquare;
+        return cellSprite.getPath().toString();
     }
 
     public void setCoordinate(Coordinate coordinate) {

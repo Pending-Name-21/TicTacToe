@@ -1,15 +1,20 @@
 package com.tic_tac_toe;
 
+import com.bridge.Game;
+import com.bridge.core.exceptions.GameException;
 import com.bridge.ipc.Receiver;
 import com.bridge.ipc.SocketServer;
 import com.bridge.processinputhandler.InputVerifier;
-import com.bridge.processinputhandler.KeyboardEventManager;
-import com.tic_tac_toe.listeners.Listener;
+import com.bridge.renderHandler.builders.SoundBuilder;
+import com.bridge.renderHandler.builders.SpriteBuilder;
+import com.tic_tac_toe.handler.Board;
+import com.tic_tac_toe.handler.GameController;
+import com.tic_tac_toe.listeners.BoardPosition;
+import com.tic_tac_toe.listeners.BoardValidator;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class App {
@@ -17,19 +22,32 @@ public class App {
     public static final Path NAMESPACE = Path.of(System.getProperty("java.io.tmpdir"), "test-events-socket.sock");
 
     public static void main(String[] args) {
-        KeyboardEventManager keyboardEventManager = new KeyboardEventManager();
-        Listener listener = new Listener(keyboardEventManager);
-        Receiver receiver = new Receiver();
-        receiver.addBuffer(keyboardEventManager);
+        Board board = new Board();
+        BoardValidator boardValidator = new BoardValidator(board);
+        Game game = new Game(boardValidator);
 
-        AtomicBoolean atomicBoolean = new AtomicBoolean(true);
-        startServer(receiver, atomicBoolean);
+        BoardPosition boardPosition = new BoardPosition(board);
+        GameController gameController = new GameController(board, boardValidator, game);
 
-        listener.startConnection();
+        game.getKeyboardEventManager().subscribe(boardPosition);
+        game.getKeyboardEventManager().subscribe(gameController);
+        board.initBoard(new SpriteBuilder(game.getSpriteIRepository()));
 
-        InputVerifier verifier = new InputVerifier(List.of(keyboardEventManager));
+//        KeyboardEventManager keyboardEventManager = new KeyboardEventManager();
+//        Listener listener = new Listener(keyboardEventManager);
+//        Receiver receiver = new Receiver();
+//        receiver.addBuffer(keyboardEventManager);
+//        AtomicBoolean atomicBoolean = new AtomicBoolean(true);
+//        startServer(receiver, atomicBoolean);
+//        listener.startConnection();
+//        InputVerifier verifier = new InputVerifier(List.of(keyboardEventManager));
+//        runVerifierLoop(verifier);
 
-        runVerifierLoop(verifier);
+        try {
+            game.run();
+        } catch (GameException e) {
+            e.printStackTrace();
+        }
     }
 
     private static void startServer(Receiver receiver, AtomicBoolean atomicBoolean) {
