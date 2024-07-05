@@ -161,7 +161,7 @@ public class GameController implements IEventSubscriber<Keyboard> {
             Sound sound = soundBuilder.assemble();
 
             try {
-                transmitter.send(new Frame(List.of(sprite), List.of()));
+                transmitter.send(new Frame(List.of(sprite), List.of(sound)));
             } catch (RenderException e) {
                 throw new RuntimeException(e);
             }

@@ -57,47 +57,35 @@ public class Board {
     }
 
     public void initBoard() throws NonExistentFilePathException {
-        /*builder = new SpriteBuilder(boardRepository);
-        builder.buildSize(Sizes.HEIGHT_APP, Sizes.WIDTH_APP);
-        builder.buildCoord(0, 0);
-        builder.buildPath(Utils.BASE_PATH.concat("/board/selectedCells/Board-11.png"));
-        Sprite sprite1 = builder.assemble();
-
-        try {
-            transmitter.send(new Frame(List.of(sprite1), List.of()));
-        } catch (RenderException e) {
-            throw new RuntimeException(e);
-        }*/
-
-        int des = 225;
+        int des = 200;
         board[0][0] = new Cell(
-                new Coordinate(-des, des),
+                new Coordinate(-des - 55, des - 10),
                 SourcePaths.BASE_PATH.concat("/board/selectedCells/Board-11.png"));
         board[0][1] = new Cell(
-                new Coordinate(0, des),
+                new Coordinate(0, des - 10),
                 SourcePaths.BASE_PATH.concat("/board/selectedCells/Board-12.png"));
         board[0][2] = new Cell(
-                new Coordinate(des, des),
+                new Coordinate(des + 55, des - 10),
                 SourcePaths.BASE_PATH.concat("/board/selectedCells/Board-13.png"));
 
         board[1][0] = new Cell(
-                new Coordinate(-des, 0),
+                new Coordinate(-des - 55, 0),
                 SourcePaths.BASE_PATH.concat("/board/selectedCells/Board-21.png"));
         board[1][1] = new Cell(
                 new Coordinate(0, 0),
                 SourcePaths.BASE_PATH.concat("/board/selectedCells/Board-22.png"));
         board[1][2] = new Cell(
-                new Coordinate(des, 0),
+                new Coordinate(des + 55, 0),
                 SourcePaths.BASE_PATH.concat("/board/selectedCells/Board-23.png"));
 
         board[2][0] = new Cell(
-                new Coordinate(-des, -des),
+                new Coordinate(-des - 55, -des),
                 SourcePaths.BASE_PATH.concat("/board/selectedCells/Board-31.png"));
         board[2][1] = new Cell(
                 new Coordinate(0, -des),
                 SourcePaths.BASE_PATH.concat("/board/selectedCells/Board-32.png"));
         board[2][2] = new Cell(
-                new Coordinate(des, -des),
+                new Coordinate(des + 55, -des),
                 SourcePaths.BASE_PATH.concat("/board/selectedCells/Board-33.png"));
 
         currentCell = board[0][0];
