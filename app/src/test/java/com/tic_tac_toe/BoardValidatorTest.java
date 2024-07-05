@@ -15,117 +15,125 @@ public class BoardValidatorTest {
 
     @Test
     public void testCheckWinnerRow() {
-        AbstractBoard abstractBoard = new AbstractBoard() {
-            @Override
-            public void initBoard() {
-                board[0][0] = new Cell(Player.PLAYER_O);
-                board[0][1] = new Cell(Player.PLAYER_O);
-                board[0][2] = new Cell(Player.PLAYER_O);
-                board[1][0] = new Cell();
-                board[1][1] = new Cell();
-                board[1][2] = new Cell();
-                board[2][0] = new Cell();
-                board[2][1] = new Cell();
-                board[2][2] = new Cell();
-            }
-        };
+        AbstractBoard abstractBoard =
+                new AbstractBoard() {
+                    @Override
+                    public void initBoard() {
+                        board[0][0] = new Cell(Player.PLAYER_O);
+                        board[0][1] = new Cell(Player.PLAYER_O);
+                        board[0][2] = new Cell(Player.PLAYER_O);
+                        board[1][0] = new Cell();
+                        board[1][1] = new Cell();
+                        board[1][2] = new Cell();
+                        board[2][0] = new Cell();
+                        board[2][1] = new Cell();
+                        board[2][2] = new Cell();
+                    }
+                };
         abstractBoard.initBoard();
         BoardValidator boardValidator = new BoardValidator(abstractBoard);
         Winner actualWinner = boardValidator.checkWinner();
-        Winner expectedWinner = new Winner(WinnerLine.ROW.getPath(0),
-                WinnerPlayer.WINNER_PLAYER_O.getPath());
+        Winner expectedWinner =
+                new Winner(WinnerLine.ROW.getPath(0), WinnerPlayer.WINNER_PLAYER_O.getPath());
 
         assertEquals(expectedWinner.getWinnerLine(), actualWinner.getWinnerLine());
     }
 
     @Test
     public void testCheckWinnerColumn() {
-        AbstractBoard abstractBoard = new AbstractBoard() {
-            @Override
-            public void initBoard() {
-                board[0][0] = new Cell(Player.PLAYER_X);
-                board[1][0] = new Cell(Player.PLAYER_X);
-                board[2][0] = new Cell(Player.PLAYER_X);
-                board[0][1] = new Cell();
-                board[1][1] = new Cell();
-                board[2][1] = new Cell();
-                board[0][2] = new Cell();
-                board[1][2] = new Cell();
-                board[2][2] = new Cell();
-            }
-        };
+        AbstractBoard abstractBoard =
+                new AbstractBoard() {
+                    @Override
+                    public void initBoard() {
+                        board[0][0] = new Cell(Player.PLAYER_X);
+                        board[1][0] = new Cell(Player.PLAYER_X);
+                        board[2][0] = new Cell(Player.PLAYER_X);
+                        board[0][1] = new Cell();
+                        board[1][1] = new Cell();
+                        board[2][1] = new Cell();
+                        board[0][2] = new Cell();
+                        board[1][2] = new Cell();
+                        board[2][2] = new Cell();
+                    }
+                };
         abstractBoard.initBoard();
         BoardValidator boardValidator = new BoardValidator(abstractBoard);
         Winner actualWinner = boardValidator.checkWinner();
-        Winner expectedWinner = new Winner(WinnerLine.COLUMN.getPath(0), WinnerPlayer.WINNER_PLAYER_X.getPath());
+        Winner expectedWinner =
+                new Winner(WinnerLine.COLUMN.getPath(0), WinnerPlayer.WINNER_PLAYER_X.getPath());
 
         assertEquals(expectedWinner.getWinnerLine(), actualWinner.getWinnerLine());
     }
 
     @Test
     public void testCheckWinnerMainDiagonal() {
-        AbstractBoard abstractBoard = new AbstractBoard() {
-            @Override
-            public void initBoard() {
-                board[0][0] = new Cell(Player.PLAYER_O);
-                board[1][1] = new Cell(Player.PLAYER_O);
-                board[2][2] = new Cell(Player.PLAYER_O);
-                board[0][1] = new Cell();
-                board[0][2] = new Cell();
-                board[1][0] = new Cell();
-                board[1][2] = new Cell();
-                board[2][0] = new Cell();
-                board[2][1] = new Cell();
-            }
-        };
+        AbstractBoard abstractBoard =
+                new AbstractBoard() {
+                    @Override
+                    public void initBoard() {
+                        board[0][0] = new Cell(Player.PLAYER_O);
+                        board[1][1] = new Cell(Player.PLAYER_O);
+                        board[2][2] = new Cell(Player.PLAYER_O);
+                        board[0][1] = new Cell();
+                        board[0][2] = new Cell();
+                        board[1][0] = new Cell();
+                        board[1][2] = new Cell();
+                        board[2][0] = new Cell();
+                        board[2][1] = new Cell();
+                    }
+                };
         abstractBoard.initBoard();
         BoardValidator boardValidator = new BoardValidator(abstractBoard);
         Winner actualWinner = boardValidator.checkWinner();
-        Winner expectedWinner = new Winner(WinnerLine.DIAGONAL.getPath(0), WinnerPlayer.WINNER_PLAYER_O.getPath());
+        Winner expectedWinner =
+                new Winner(WinnerLine.DIAGONAL.getPath(0), WinnerPlayer.WINNER_PLAYER_O.getPath());
 
         assertEquals(expectedWinner.getWinnerLine(), actualWinner.getWinnerLine());
     }
 
     @Test
     public void testCheckWinnerAntiDiagonal() {
-        AbstractBoard abstractBoard = new AbstractBoard() {
-            @Override
-            public void initBoard() {
-                board[0][2] = new Cell(Player.PLAYER_X);
-                board[1][1] = new Cell(Player.PLAYER_X);
-                board[2][0] = new Cell(Player.PLAYER_X);
-                board[0][0] = new Cell();
-                board[0][1] = new Cell();
-                board[1][0] = new Cell();
-                board[1][2] = new Cell();
-                board[2][1] = new Cell();
-                board[2][2] = new Cell();
-            }
-        };
+        AbstractBoard abstractBoard =
+                new AbstractBoard() {
+                    @Override
+                    public void initBoard() {
+                        board[0][2] = new Cell(Player.PLAYER_X);
+                        board[1][1] = new Cell(Player.PLAYER_X);
+                        board[2][0] = new Cell(Player.PLAYER_X);
+                        board[0][0] = new Cell();
+                        board[0][1] = new Cell();
+                        board[1][0] = new Cell();
+                        board[1][2] = new Cell();
+                        board[2][1] = new Cell();
+                        board[2][2] = new Cell();
+                    }
+                };
         abstractBoard.initBoard();
         BoardValidator boardValidator = new BoardValidator(abstractBoard);
         Winner actualWinner = boardValidator.checkWinner();
-        Winner expectedWinner = new Winner(WinnerLine.DIAGONAL.getPath(1), WinnerPlayer.WINNER_PLAYER_X.getPath());
+        Winner expectedWinner =
+                new Winner(WinnerLine.DIAGONAL.getPath(1), WinnerPlayer.WINNER_PLAYER_X.getPath());
 
         assertEquals(expectedWinner.getWinnerLine(), actualWinner.getWinnerLine());
     }
 
     @Test
     public void testCheckTie() {
-        AbstractBoard abstractBoard = new AbstractBoard() {
-            @Override
-            public void initBoard() {
-                board[0][0] = new Cell(Player.PLAYER_X);
-                board[0][1] = new Cell(Player.PLAYER_O);
-                board[0][2] = new Cell(Player.PLAYER_X);
-                board[1][0] = new Cell(Player.PLAYER_X);
-                board[1][1] = new Cell(Player.PLAYER_X);
-                board[1][2] = new Cell(Player.PLAYER_O);
-                board[2][0] = new Cell(Player.PLAYER_O);
-                board[2][1] = new Cell(Player.PLAYER_X);
-                board[2][2] = new Cell(Player.PLAYER_O);
-            }
-        };
+        AbstractBoard abstractBoard =
+                new AbstractBoard() {
+                    @Override
+                    public void initBoard() {
+                        board[0][0] = new Cell(Player.PLAYER_X);
+                        board[0][1] = new Cell(Player.PLAYER_O);
+                        board[0][2] = new Cell(Player.PLAYER_X);
+                        board[1][0] = new Cell(Player.PLAYER_X);
+                        board[1][1] = new Cell(Player.PLAYER_X);
+                        board[1][2] = new Cell(Player.PLAYER_O);
+                        board[2][0] = new Cell(Player.PLAYER_O);
+                        board[2][1] = new Cell(Player.PLAYER_X);
+                        board[2][2] = new Cell(Player.PLAYER_O);
+                    }
+                };
         abstractBoard.initBoard();
         BoardValidator boardValidator = new BoardValidator(abstractBoard);
         Winner actualWinner = boardValidator.checkWinner();

@@ -5,7 +5,6 @@ import com.bridge.ipc.SocketServer;
 import com.bridge.processinputhandler.InputVerifier;
 import com.bridge.processinputhandler.KeyboardEventManager;
 import com.tic_tac_toe.listeners.Listener;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,7 +13,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class App {
 
-    public static final Path NAMESPACE = Path.of(System.getProperty("java.io.tmpdir"), "test-events-socket.sock");
+    public static final Path NAMESPACE =
+            Path.of(System.getProperty("java.io.tmpdir"), "test-events-socket.sock");
 
     public static void main(String[] args) {
         KeyboardEventManager keyboardEventManager = new KeyboardEventManager();

@@ -29,10 +29,9 @@ public class BoardPosition implements IEventSubscriber<Keyboard> {
                         x = Math.max(x - 1, 0);
                 case "S", "Down" -> // Down
                         x = Math.min(x + 1, 2);
-                default -> {
-                }
+                default -> {}
             }
-            board.setCurrentCell(x,y);
+            board.setCurrentCell(x, y);
         }
     }
 }

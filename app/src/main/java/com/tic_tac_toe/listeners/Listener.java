@@ -5,7 +5,6 @@ import com.bridge.ipc.Transmitter;
 import com.bridge.processinputhandler.KeyboardEventManager;
 import com.tic_tac_toe.handler.Board;
 import com.tic_tac_toe.handler.GameController;
-
 import java.io.IOException;
 import java.net.SocketAddress;
 import java.net.UnixDomainSocketAddress;

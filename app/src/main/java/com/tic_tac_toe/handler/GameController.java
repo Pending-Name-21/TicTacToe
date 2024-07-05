@@ -19,7 +19,6 @@ import com.tic_tac_toe.model.Player;
 import com.tic_tac_toe.model.winner.Winner;
 import com.tic_tac_toe.utils.Sizes;
 import com.tic_tac_toe.utils.SourcePaths;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -43,17 +42,17 @@ public class GameController implements IEventSubscriber<Keyboard> {
     }
 
     private Queue<String> initializePaths(String symbol) {
-        return new LinkedList<>(List.of(
-                SourcePaths.BASE_PATH.concat("/assets/general/" + symbol + "a.png"),
-                SourcePaths.BASE_PATH.concat("/assets/general/" + symbol + "b.png"),
-                SourcePaths.BASE_PATH.concat("/assets/general/" + symbol + "c.png"),
-                SourcePaths.BASE_PATH.concat("/assets/general/" + symbol + "d.png"),
-                SourcePaths.BASE_PATH.concat("/assets/general/" + symbol + "e.png"),
-                SourcePaths.BASE_PATH.concat("/assets/general/" + symbol + "f.png"),
-                SourcePaths.BASE_PATH.concat("/assets/general/" + symbol + "g.png"),
-                SourcePaths.BASE_PATH.concat("/assets/general/" + symbol + "h.png"),
-                SourcePaths.BASE_PATH.concat("/assets/general/" + symbol + "i.png")
-        ));
+        return new LinkedList<>(
+                List.of(
+                        SourcePaths.BASE_PATH.concat("/assets/general/" + symbol + "a.png"),
+                        SourcePaths.BASE_PATH.concat("/assets/general/" + symbol + "b.png"),
+                        SourcePaths.BASE_PATH.concat("/assets/general/" + symbol + "c.png"),
+                        SourcePaths.BASE_PATH.concat("/assets/general/" + symbol + "d.png"),
+                        SourcePaths.BASE_PATH.concat("/assets/general/" + symbol + "e.png"),
+                        SourcePaths.BASE_PATH.concat("/assets/general/" + symbol + "f.png"),
+                        SourcePaths.BASE_PATH.concat("/assets/general/" + symbol + "g.png"),
+                        SourcePaths.BASE_PATH.concat("/assets/general/" + symbol + "h.png"),
+                        SourcePaths.BASE_PATH.concat("/assets/general/" + symbol + "i.png")));
     }
 
     public void switchPlayer() {
@@ -66,7 +65,8 @@ public class GameController implements IEventSubscriber<Keyboard> {
 
     @Override
     public void doNotify(Keyboard keyboard) {
-        if ("KeyPressed".equals(keyboard.type()) && ("Return".equals(keyboard.key()) || "Space".equals(keyboard.key()))) {
+        if ("KeyPressed".equals(keyboard.type())
+                && ("Return".equals(keyboard.key()) || "Space".equals(keyboard.key()))) {
             handleKeyPress();
         }
     }
@@ -75,7 +75,8 @@ public class GameController implements IEventSubscriber<Keyboard> {
         Cell cell = board.getCurrentCell();
         if (!cell.wasUsed()) {
             Coordinate coordinate = cell.getCoordinate();
-            Sprite sprite = createSprite(coordinate.getX(), coordinate.getY(), getPath(currentPlayer));
+            Sprite sprite =
+                    createSprite(coordinate.getX(), coordinate.getY(), getPath(currentPlayer));
             sendFrame(List.of(sprite), List.of());
             cell.setPlayer(currentPlayer);
             switchPlayer();
@@ -85,8 +86,7 @@ public class GameController implements IEventSubscriber<Keyboard> {
 
     private Sprite createSprite(int x, int y, String path) {
         SpriteBuilder builder = new SpriteBuilder(new SpriteRepository());
-        builder.buildSize(Sizes.SYMBOL_SIZE_H, Sizes.SYMBOL_SIZE_W)
-                .buildCoord(x, y);
+        builder.buildSize(Sizes.SYMBOL_SIZE_H, Sizes.SYMBOL_SIZE_W).buildCoord(x, y);
         try {
             builder.buildPath(path);
         } catch (NonExistentFilePathException e) {
@@ -131,8 +131,7 @@ public class GameController implements IEventSubscriber<Keyboard> {
 
     private Sprite createFullScreenSprite(String path) {
         SpriteBuilder builder = new SpriteBuilder(new SpriteRepository());
-        builder.buildSize(Sizes.HEIGHT_APP, Sizes.WIDTH_APP)
-                .buildCoord(0, 0);
+        builder.buildSize(Sizes.HEIGHT_APP, Sizes.WIDTH_APP).buildCoord(0, 0);
         try {
             builder.buildPath(path);
         } catch (NonExistentFilePathException e) {

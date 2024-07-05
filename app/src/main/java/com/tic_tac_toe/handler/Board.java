@@ -10,7 +10,6 @@ import com.bridge.renderHandler.sprite.Sprite;
 import com.tic_tac_toe.model.Cell;
 import com.tic_tac_toe.model.Coordinate;
 import com.tic_tac_toe.utils.SourcePaths;
-
 import java.util.List;
 
 public class Board extends AbstractBoard {
@@ -47,7 +46,8 @@ public class Board extends AbstractBoard {
     }
 
     private String getBoardSquarePath(int row, int col) {
-        return SourcePaths.BASE_PATH.concat(String.format("/board/selectedCells/Board-%d%d.png", row, col));
+        return SourcePaths.BASE_PATH.concat(
+                String.format("/board/selectedCells/Board-%d%d.png", row, col));
     }
 
     private void sendSprite(String path) {
