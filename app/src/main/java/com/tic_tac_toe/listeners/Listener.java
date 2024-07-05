@@ -1,7 +1,5 @@
 package com.tic_tac_toe.listeners;
 
-import com.bridge.core.exceptions.renderHandlerExceptions.NonExistentFilePathException;
-import com.bridge.core.exceptions.renderHandlerExceptions.RenderException;
 import com.bridge.ipc.SocketClient;
 import com.bridge.ipc.Transmitter;
 import com.bridge.processinputhandler.KeyboardEventManager;
@@ -35,31 +33,30 @@ public class Listener {
         }
     }
 
-    public void startConnection() {
-        boolean successConnection = false;
-        while (!successConnection) {
-            if (isSocketRunning()) {
-                Path socketPath = Path.of(SCREEN_SOCKET);
-                SocketClient socketClient = new SocketClient(socketPath);
-                transmitter = new Transmitter(socketClient);
-                Board board = new Board(transmitter);
-                try {
-                    board.initBoard();
-                } catch (NonExistentFilePathException e) {
-                    throw new RuntimeException(e);
-                }
-                BoardValidator boardValidator = new BoardValidator(board);
-                keyboardEventManager.subscribe(new BoardPosition(board));
-                keyboardEventManager.subscribe(new GameController(board, boardValidator, transmitter));
-                successConnection = true;
-            } else {
-                try {
-                    System.out.println("Waiting for screen...");
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            }
+    private void waitForScreen() {
+        try {
+            System.out.println("Waiting for screen...");
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
+    }
+
+    private void setupBoardAndTransmitter() {
+        Path socketPath = Path.of(SCREEN_SOCKET);
+        SocketClient socketClient = new SocketClient(socketPath);
+        transmitter = new Transmitter(socketClient);
+        Board board = new Board(transmitter);
+        board.initBoard();
+        BoardValidator boardValidator = new BoardValidator(board);
+        keyboardEventManager.subscribe(new BoardPosition(board));
+        keyboardEventManager.subscribe(new GameController(board, boardValidator, transmitter));
+    }
+
+    public void startConnection() {
+        while (!isSocketRunning()) {
+            waitForScreen();
+        }
+        setupBoardAndTransmitter();
     }
 }

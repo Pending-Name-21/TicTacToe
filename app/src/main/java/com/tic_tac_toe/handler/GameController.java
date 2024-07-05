@@ -26,143 +26,137 @@ import java.util.Queue;
 
 public class GameController implements IEventSubscriber<Keyboard> {
 
-    private Board board;
+    private final Board board;
     private Player currentPlayer;
-    private BoardValidator boardValidator;
-    private Transmitter transmitter;
-    private Queue<String> pathsO;
-    private Queue<String> pathsX;
+    private final BoardValidator boardValidator;
+    private final Transmitter transmitter;
+    private final Queue<String> pathsO;
+    private final Queue<String> pathsX;
 
     public GameController(Board board, BoardValidator boardValidator, Transmitter transmitter) {
         this.board = board;
         this.boardValidator = boardValidator;
         this.transmitter = transmitter;
-        pathsO = new LinkedList<>(List.of(
-                SourcePaths.BASE_PATH.concat("/assets/general/osymbola.png"),
-                SourcePaths.BASE_PATH.concat("/assets/general/osymbolb.png"),
-                SourcePaths.BASE_PATH.concat("/assets/general/osymbolc.png"),
-                SourcePaths.BASE_PATH.concat("/assets/general/osymbold.png"),
-                SourcePaths.BASE_PATH.concat("/assets/general/osymbole.png"),
-                SourcePaths.BASE_PATH.concat("/assets/general/osymbolf.png"),
-                SourcePaths.BASE_PATH.concat("/assets/general/osymbolg.png"),
-                SourcePaths.BASE_PATH.concat("/assets/general/osymbolh.png"),
-                SourcePaths.BASE_PATH.concat("/assets/general/osymboli.png")));
-        pathsX = new LinkedList<>(List.of(
-                SourcePaths.BASE_PATH.concat("/assets/general/xsymbola.png"),
-                SourcePaths.BASE_PATH.concat("/assets/general/xsymbolb.png"),
-                SourcePaths.BASE_PATH.concat("/assets/general/xsymbolc.png"),
-                SourcePaths.BASE_PATH.concat("/assets/general/xsymbold.png"),
-                SourcePaths.BASE_PATH.concat("/assets/general/xsymbole.png"),
-                SourcePaths.BASE_PATH.concat("/assets/general/xsymbolf.png"),
-                SourcePaths.BASE_PATH.concat("/assets/general/xsymbolg.png"),
-                SourcePaths.BASE_PATH.concat("/assets/general/xsymbolh.png"),
-                SourcePaths.BASE_PATH.concat("/assets/general/xsymboli.png")
+        this.pathsO = initializePaths("osymbol");
+        this.pathsX = initializePaths("xsymbol");
+        this.currentPlayer = Player.PLAYER_X;
+    }
+
+    private Queue<String> initializePaths(String symbol) {
+        return new LinkedList<>(List.of(
+                SourcePaths.BASE_PATH.concat("/assets/general/" + symbol + "a.png"),
+                SourcePaths.BASE_PATH.concat("/assets/general/" + symbol + "b.png"),
+                SourcePaths.BASE_PATH.concat("/assets/general/" + symbol + "c.png"),
+                SourcePaths.BASE_PATH.concat("/assets/general/" + symbol + "d.png"),
+                SourcePaths.BASE_PATH.concat("/assets/general/" + symbol + "e.png"),
+                SourcePaths.BASE_PATH.concat("/assets/general/" + symbol + "f.png"),
+                SourcePaths.BASE_PATH.concat("/assets/general/" + symbol + "g.png"),
+                SourcePaths.BASE_PATH.concat("/assets/general/" + symbol + "h.png"),
+                SourcePaths.BASE_PATH.concat("/assets/general/" + symbol + "i.png")
         ));
-        currentPlayer = Player.PLAYER_X;
     }
 
     public void switchPlayer() {
-        if (currentPlayer == Player.PLAYER_X) {
-            currentPlayer = Player.PLAYER_O;
-        } else {
-            currentPlayer = Player.PLAYER_X;
-        }
+        currentPlayer = (currentPlayer == Player.PLAYER_X) ? Player.PLAYER_O : Player.PLAYER_X;
     }
 
     public String getPath(Player player) {
-        return player.getSymbol() == Player.PLAYER_X.getSymbol()
-                ? pathsX.poll() : pathsO.poll();
+        return player == Player.PLAYER_X ? pathsX.poll() : pathsO.poll();
     }
 
     @Override
     public void doNotify(Keyboard keyboard) {
-        if (keyboard.type().equals("KeyPressed")
-                && keyboard.key().equals("O")) {
+        if ("KeyPressed".equals(keyboard.type()) && ("Return".equals(keyboard.key()) || "Space".equals(keyboard.key()))) {
+            handleKeyPress();
+        }
+    }
 
-            Cell cell = board.getCurrentCell();
-            if (!cell.wasUsed()) {
-                Coordinate coordinate = cell.getCoordinate();
-                SpriteBuilder builder = new SpriteBuilder(new SpriteRepository());
-                builder.buildSize(Sizes.SYMBOL_SIZE_H, Sizes.SYMBOL_SIZE_W);
-                builder.buildCoord(coordinate.getX(), coordinate.getY());
-                try {
-                    builder.buildPath(getPath(currentPlayer));
-                } catch (NonExistentFilePathException e) {
-                    throw new RuntimeException(e);
-                }
-                Sprite sprite = builder.assemble();
+    private void handleKeyPress() {
+        Cell cell = board.getCurrentCell();
+        if (!cell.wasUsed()) {
+            Coordinate coordinate = cell.getCoordinate();
+            Sprite sprite = createSprite(coordinate.getX(), coordinate.getY(), getPath(currentPlayer));
+            sendFrame(List.of(sprite), List.of());
+            cell.setPlayer(currentPlayer);
+            switchPlayer();
+            checkGameState();
+        }
+    }
 
-                try {
-                    transmitter.send(new Frame(List.of(sprite), List.of()));
-                } catch (RenderException e) {
-                    throw new RuntimeException(e);
-                }
+    private Sprite createSprite(int x, int y, String path) {
+        SpriteBuilder builder = new SpriteBuilder(new SpriteRepository());
+        builder.buildSize(Sizes.SYMBOL_SIZE_H, Sizes.SYMBOL_SIZE_W)
+                .buildCoord(x, y);
+        try {
+            builder.buildPath(path);
+        } catch (NonExistentFilePathException e) {
+            throw new RuntimeException(e);
+        }
+        return builder.assemble();
+    }
 
-                board.getCurrentCell().setPlayer(currentPlayer);
-                switchPlayer();
-                checkGameState();
-            }
+    private void sendFrame(List<Sprite> sprites, List<Sound> sounds) {
+        try {
+            transmitter.send(new Frame(sprites, sounds));
+        } catch (RenderException e) {
+            throw new RuntimeException(e);
         }
     }
 
     private void checkGameState() {
-        Sprite sprite;
-        SpriteBuilder builder;
-        boolean wasFinished = boardValidator.isGameOver();
-
-        if (wasFinished) {
-            Winner winner = boardValidator.getWinner();
-            if (!winner.getWinnerLine().isEmpty()) {
-                builder = new SpriteBuilder(new SpriteRepository());
-                builder.buildSize(Sizes.HEIGHT_APP, Sizes.WIDTH_APP);
-                builder.buildCoord(0, 0);
-                try {
-                    builder.buildPath(winner.getWinnerLine());
-                } catch (NonExistentFilePathException e) {
-                    throw new RuntimeException(e);
-                }
-                sprite = builder.assemble();
-
-                try {
-                    transmitter.send(new Frame(List.of(sprite), List.of()));
-                } catch (RenderException e) {
-                    throw new RuntimeException(e);
-                }
-
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
-            builder = new SpriteBuilder(new SpriteRepository());
-            builder.buildSize(Sizes.HEIGHT_APP, Sizes.WIDTH_APP);
-            builder.buildCoord(0, 0);
-            try {
-                builder.buildPath(winner.getWinnerPlayer());
-            } catch (NonExistentFilePathException e) {
-                throw new RuntimeException(e);
-            }
-
-            sprite = builder.assemble();
-
-            SoundBuilder soundBuilder = new SoundBuilder(new SoundRepository());
-            try {
-                soundBuilder.buildPath(SourcePaths.BASE_PATH.concat("/sounds/win-game-2.mp3"));
-            } catch (NonExistentFilePathException e) {
-                throw new RuntimeException(e);
-            }
-
-            Sound sound = soundBuilder.assemble();
-
-            try {
-                transmitter.send(new Frame(List.of(sprite), List.of(sound)));
-            } catch (RenderException e) {
-                throw new RuntimeException(e);
-            }
-
+        if (boardValidator.isGameOver()) {
+            handleGameOver();
         }
     }
 
+    private void handleGameOver() {
+        Winner winner = boardValidator.getWinner();
+        if (!winner.getWinnerLine().isEmpty()) {
+            displayWinnerLine(winner.getWinnerLine());
+            pause(1000);
+        }
+        displayWinner(winner.getWinnerPlayer());
+        playWinSound();
+    }
+
+    private void displayWinnerLine(String winnerLine) {
+        Sprite sprite = createFullScreenSprite(winnerLine);
+        sendFrame(List.of(sprite), List.of());
+    }
+
+    private void displayWinner(String winnerPath) {
+        Sprite sprite = createFullScreenSprite(winnerPath);
+        sendFrame(List.of(sprite), List.of());
+    }
+
+    private Sprite createFullScreenSprite(String path) {
+        SpriteBuilder builder = new SpriteBuilder(new SpriteRepository());
+        builder.buildSize(Sizes.HEIGHT_APP, Sizes.WIDTH_APP)
+                .buildCoord(0, 0);
+        try {
+            builder.buildPath(path);
+        } catch (NonExistentFilePathException e) {
+            throw new RuntimeException(e);
+        }
+        return builder.assemble();
+    }
+
+    private void playWinSound() {
+        SoundBuilder soundBuilder = new SoundBuilder(new SoundRepository());
+        try {
+            soundBuilder.buildPath(SourcePaths.BASE_PATH.concat("/sounds/win-game-2.mp3"));
+        } catch (NonExistentFilePathException e) {
+            throw new RuntimeException(e);
+        }
+        Sound sound = soundBuilder.assemble();
+        sendFrame(List.of(), List.of(sound));
+    }
+
+    private void pause(int millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

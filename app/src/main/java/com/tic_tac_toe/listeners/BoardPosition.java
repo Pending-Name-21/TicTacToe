@@ -21,13 +21,13 @@ public class BoardPosition implements IEventSubscriber<Keyboard> {
         if (keyboard.type().equals("KeyPressed")) {
             String keyCode = keyboard.key();
             switch (keyCode) {
-                case "D" -> // Up
+                case "D", "Right" -> // Right
                         y = Math.min(y + 1, 2);
-                case "A" -> // Down
+                case "A", "Left" -> // Left
                         y = Math.max(y - 1, 0);
-                case "W" -> // Left
+                case "W", "Up" -> // Up
                         x = Math.max(x - 1, 0);
-                case "S" -> // Right
+                case "S", "Down" -> // Down
                         x = Math.min(x + 1, 2);
                 default -> {
                 }

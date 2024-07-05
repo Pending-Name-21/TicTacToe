@@ -14,8 +14,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class App {
 
-    public static final Path NAMESPACE =
-            Path.of(System.getProperty("java.io.tmpdir"), "test-events-socket.sock");
+    public static final Path NAMESPACE = Path.of(System.getProperty("java.io.tmpdir"), "test-events-socket.sock");
 
     public static void main(String[] args) {
         KeyboardEventManager keyboardEventManager = new KeyboardEventManager();
@@ -30,30 +29,38 @@ public class App {
 
         InputVerifier verifier = new InputVerifier(List.of(keyboardEventManager));
 
-        while (true) {
-            verifier.check();
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+        runVerifierLoop(verifier);
     }
 
-    public static void startServer(Receiver receiver, AtomicBoolean atomicBoolean) {
+    private static void startServer(Receiver receiver, AtomicBoolean atomicBoolean) {
         try {
             Files.deleteIfExists(NAMESPACE);
         } catch (IOException e) {
             e.printStackTrace();
         }
         SocketServer socketServer = new SocketServer(receiver, NAMESPACE, atomicBoolean);
-        Thread thread = new Thread(socketServer);
-        thread.start();
+        Thread serverThread = new Thread(socketServer);
+        serverThread.start();
+        waitForNamespaceCreation(serverThread);
+    }
+
+    private static void waitForNamespaceCreation(Thread serverThread) {
         while (!Files.exists(NAMESPACE)) {
             try {
                 Thread.sleep(10);
             } catch (InterruptedException e) {
-                thread.interrupt();
+                serverThread.interrupt();
+            }
+        }
+    }
+
+    private static void runVerifierLoop(InputVerifier verifier) {
+        while (true) {
+            verifier.check();
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }
