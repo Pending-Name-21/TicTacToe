@@ -1,78 +1,136 @@
-/*
 package com.tic_tac_toe;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.bridge.core.exceptions.renderHandlerExceptions.NonExistentFilePathException;
-import com.bridge.renderHandler.repository.SpriteRepository;
-import org.junit.jupiter.api.BeforeEach;
+import com.tic_tac_toe.handler.AbstractBoard;
+import com.tic_tac_toe.listeners.BoardValidator;
+import com.tic_tac_toe.model.Cell;
+import com.tic_tac_toe.model.Player;
+import com.tic_tac_toe.model.winner.Winner;
+import com.tic_tac_toe.model.winner.WinnerLine;
+import com.tic_tac_toe.model.winner.WinnerPlayer;
 import org.junit.jupiter.api.Test;
 
 public class BoardValidatorTest {
 
-    private BoardValidator boardValidator;
-    private Board board;
-
-    @BeforeEach
-    public void setUp() throws NonExistentFilePathException {
-        SpriteRepository repository = new SpriteRepository();
-        board = new Board(repository);
-        boardValidator = new BoardValidator(board);
-    }
-
-    @Test
-    public void testIsGameOver() {
-        assertFalse(boardValidator.isGameOver());
-        board.getBoard()[0][0].setSymbol('X');
-        board.getBoard()[0][1].setSymbol('X');
-        board.getBoard()[0][2].setSymbol('X');
-        assertTrue(boardValidator.isGameOver());
-    }
-
     @Test
     public void testCheckWinnerRow() {
-        board.getBoard()[0][0].setSymbol('X');
-        board.getBoard()[0][1].setSymbol('X');
-        board.getBoard()[0][2].setSymbol('X');
-        assertEquals("Row 1", boardValidator.checkWinner());
+        AbstractBoard abstractBoard = new AbstractBoard() {
+            @Override
+            public void initBoard() {
+                board[0][0] = new Cell(Player.PLAYER_O);
+                board[0][1] = new Cell(Player.PLAYER_O);
+                board[0][2] = new Cell(Player.PLAYER_O);
+                board[1][0] = new Cell();
+                board[1][1] = new Cell();
+                board[1][2] = new Cell();
+                board[2][0] = new Cell();
+                board[2][1] = new Cell();
+                board[2][2] = new Cell();
+            }
+        };
+        abstractBoard.initBoard();
+        BoardValidator boardValidator = new BoardValidator(abstractBoard);
+        Winner actualWinner = boardValidator.checkWinner();
+        Winner expectedWinner = new Winner(WinnerLine.ROW.getPath(0),
+                WinnerPlayer.WINNER_PLAYER_O.getPath());
+
+        assertEquals(expectedWinner.getWinnerLine(), actualWinner.getWinnerLine());
     }
 
     @Test
     public void testCheckWinnerColumn() {
-        board.getBoard()[0][0].setSymbol('X');
-        board.getBoard()[1][0].setSymbol('X');
-        board.getBoard()[2][0].setSymbol('X');
-        assertEquals("Column 1", boardValidator.checkWinner());
+        AbstractBoard abstractBoard = new AbstractBoard() {
+            @Override
+            public void initBoard() {
+                board[0][0] = new Cell(Player.PLAYER_X);
+                board[1][0] = new Cell(Player.PLAYER_X);
+                board[2][0] = new Cell(Player.PLAYER_X);
+                board[0][1] = new Cell();
+                board[1][1] = new Cell();
+                board[2][1] = new Cell();
+                board[0][2] = new Cell();
+                board[1][2] = new Cell();
+                board[2][2] = new Cell();
+            }
+        };
+        abstractBoard.initBoard();
+        BoardValidator boardValidator = new BoardValidator(abstractBoard);
+        Winner actualWinner = boardValidator.checkWinner();
+        Winner expectedWinner = new Winner(WinnerLine.COLUMN.getPath(0), WinnerPlayer.WINNER_PLAYER_X.getPath());
+
+        assertEquals(expectedWinner.getWinnerLine(), actualWinner.getWinnerLine());
     }
 
     @Test
-    public void testCheckWinnerDiagonal1() {
-        board.getBoard()[0][0].setSymbol('X');
-        board.getBoard()[1][1].setSymbol('X');
-        board.getBoard()[2][2].setSymbol('X');
-        assertEquals("Diagonal 1", boardValidator.checkWinner());
+    public void testCheckWinnerMainDiagonal() {
+        AbstractBoard abstractBoard = new AbstractBoard() {
+            @Override
+            public void initBoard() {
+                board[0][0] = new Cell(Player.PLAYER_O);
+                board[1][1] = new Cell(Player.PLAYER_O);
+                board[2][2] = new Cell(Player.PLAYER_O);
+                board[0][1] = new Cell();
+                board[0][2] = new Cell();
+                board[1][0] = new Cell();
+                board[1][2] = new Cell();
+                board[2][0] = new Cell();
+                board[2][1] = new Cell();
+            }
+        };
+        abstractBoard.initBoard();
+        BoardValidator boardValidator = new BoardValidator(abstractBoard);
+        Winner actualWinner = boardValidator.checkWinner();
+        Winner expectedWinner = new Winner(WinnerLine.DIAGONAL.getPath(0), WinnerPlayer.WINNER_PLAYER_O.getPath());
+
+        assertEquals(expectedWinner.getWinnerLine(), actualWinner.getWinnerLine());
     }
 
     @Test
-    public void testCheckWinnerDiagonal2() {
-        board.getBoard()[0][2].setSymbol('X');
-        board.getBoard()[1][1].setSymbol('X');
-        board.getBoard()[2][0].setSymbol('X');
-        assertEquals("Diagonal 2", boardValidator.checkWinner());
+    public void testCheckWinnerAntiDiagonal() {
+        AbstractBoard abstractBoard = new AbstractBoard() {
+            @Override
+            public void initBoard() {
+                board[0][2] = new Cell(Player.PLAYER_X);
+                board[1][1] = new Cell(Player.PLAYER_X);
+                board[2][0] = new Cell(Player.PLAYER_X);
+                board[0][0] = new Cell();
+                board[0][1] = new Cell();
+                board[1][0] = new Cell();
+                board[1][2] = new Cell();
+                board[2][1] = new Cell();
+                board[2][2] = new Cell();
+            }
+        };
+        abstractBoard.initBoard();
+        BoardValidator boardValidator = new BoardValidator(abstractBoard);
+        Winner actualWinner = boardValidator.checkWinner();
+        Winner expectedWinner = new Winner(WinnerLine.DIAGONAL.getPath(1), WinnerPlayer.WINNER_PLAYER_X.getPath());
+
+        assertEquals(expectedWinner.getWinnerLine(), actualWinner.getWinnerLine());
     }
 
     @Test
-    public void testNoWinner() {
-        board.getBoard()[0][0].setSymbol('X');
-        board.getBoard()[0][1].setSymbol('O');
-        board.getBoard()[0][2].setSymbol('X');
-        board.getBoard()[1][0].setSymbol('O');
-        board.getBoard()[1][1].setSymbol('X');
-        board.getBoard()[1][2].setSymbol('O');
-        board.getBoard()[2][0].setSymbol('O');
-        board.getBoard()[2][1].setSymbol('X');
-        board.getBoard()[2][2].setSymbol('O');
-        assertEquals("", boardValidator.checkWinner());
+    public void testCheckTie() {
+        AbstractBoard abstractBoard = new AbstractBoard() {
+            @Override
+            public void initBoard() {
+                board[0][0] = new Cell(Player.PLAYER_X);
+                board[0][1] = new Cell(Player.PLAYER_O);
+                board[0][2] = new Cell(Player.PLAYER_X);
+                board[1][0] = new Cell(Player.PLAYER_X);
+                board[1][1] = new Cell(Player.PLAYER_X);
+                board[1][2] = new Cell(Player.PLAYER_O);
+                board[2][0] = new Cell(Player.PLAYER_O);
+                board[2][1] = new Cell(Player.PLAYER_X);
+                board[2][2] = new Cell(Player.PLAYER_O);
+            }
+        };
+        abstractBoard.initBoard();
+        BoardValidator boardValidator = new BoardValidator(abstractBoard);
+        Winner actualWinner = boardValidator.checkWinner();
+        Winner expectedWinner = new Winner("", WinnerPlayer.TIE.getPath());
+
+        assertEquals(expectedWinner.getWinnerLine(), actualWinner.getWinnerLine());
     }
 }
-*/

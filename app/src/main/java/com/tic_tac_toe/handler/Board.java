@@ -13,15 +13,13 @@ import com.tic_tac_toe.utils.SourcePaths;
 
 import java.util.List;
 
-public class Board {
+public class Board extends AbstractBoard {
 
-    private final Cell[][] board;
     private Cell currentCell;
     private final Transmitter transmitter;
 
     public Board(Transmitter transmitter) {
         this.transmitter = transmitter;
-        this.board = new Cell[3][3];
     }
 
     public void setCurrentCell(int x, int y) {
@@ -31,6 +29,7 @@ public class Board {
         }
     }
 
+    @Override
     public void initBoard() {
         int des = 200;
         board[0][0] = new Cell(new Coordinate(-des - 55, des - 10), getBoardSquarePath(1, 1));
@@ -70,10 +69,6 @@ public class Board {
         } catch (RenderException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public Cell[][] getBoard() {
-        return board;
     }
 
     public Cell getCurrentCell() {

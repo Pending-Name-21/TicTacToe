@@ -1,7 +1,7 @@
 package com.tic_tac_toe.listeners;
 
 import com.bridge.gamesettings.AGameSettings;
-import com.tic_tac_toe.handler.Board;
+import com.tic_tac_toe.handler.AbstractBoard;
 import com.tic_tac_toe.model.Cell;
 import com.tic_tac_toe.model.winner.Winner;
 import com.tic_tac_toe.model.winner.WinnerLine;
@@ -9,11 +9,11 @@ import com.tic_tac_toe.model.winner.WinnerPlayer;
 
 public class BoardValidator extends AGameSettings {
 
-    private Board board;
+    private AbstractBoard abstractBoard;
     private Winner winner;
 
-    public BoardValidator(Board board) {
-        this.board = board;
+    public BoardValidator(AbstractBoard abstractBoard) {
+        this.abstractBoard = abstractBoard;
     }
 
     @Override
@@ -33,7 +33,7 @@ public class BoardValidator extends AGameSettings {
     }
 
     public Winner checkWinner() {
-        Cell[][] gameBoard = board.getBoard();
+        Cell[][] gameBoard = abstractBoard.getBoard();
         int size = gameBoard.length;
 
         // Check rows

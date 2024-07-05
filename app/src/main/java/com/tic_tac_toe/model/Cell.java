@@ -5,6 +5,12 @@ public class Cell {
     private Player player;
     private String boardSquare;
 
+    public Cell() {}
+
+    public Cell(Player player) {
+        this.player = player;
+    }
+
     public Cell(Coordinate coordinate, String boardSquare) {
         this.coordinate = coordinate;
         this.boardSquare = boardSquare;
