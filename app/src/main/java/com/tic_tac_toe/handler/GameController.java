@@ -5,9 +5,12 @@ import com.bridge.core.exceptions.renderHandlerExceptions.NonExistentFilePathExc
 import com.bridge.core.exceptions.renderHandlerExceptions.RenderException;
 import com.bridge.ipc.Transmitter;
 import com.bridge.processinputhandler.IEventSubscriber;
+import com.bridge.renderHandler.builders.SoundBuilder;
 import com.bridge.renderHandler.builders.SpriteBuilder;
 import com.bridge.renderHandler.render.Frame;
+import com.bridge.renderHandler.repository.SoundRepository;
 import com.bridge.renderHandler.repository.SpriteRepository;
+import com.bridge.renderHandler.sound.Sound;
 import com.bridge.renderHandler.sprite.Sprite;
 import com.tic_tac_toe.listeners.BoardValidator;
 import com.tic_tac_toe.model.Cell;
@@ -88,14 +91,17 @@ public class GameController implements IEventSubscriber<Keyboard> {
                     throw new RuntimeException(e);
                 }
                 Sprite sprite = builder.assemble();
-                sprite.setZ_index(3);
+                Frame frame = new Frame(List.of(sprite), List.of());
+                System.out.println(sprite.getPath());
+                System.out.println(frame.sprites());
 
-                board.getCurrentCell().setPlayer(currentPlayer);
                 try {
                     transmitter.send(new Frame(List.of(sprite), List.of()));
                 } catch (RenderException e) {
                     throw new RuntimeException(e);
                 }
+
+                board.getCurrentCell().setPlayer(currentPlayer);
                 switchPlayer();
                 checkGameState();
                 board.printBoard();
@@ -120,7 +126,6 @@ public class GameController implements IEventSubscriber<Keyboard> {
                     throw new RuntimeException(e);
                 }
                 sprite = builder.assemble();
-                sprite.setZ_index(4);
 
                 try {
                     transmitter.send(new Frame(List.of(sprite), List.of()));
@@ -145,7 +150,15 @@ public class GameController implements IEventSubscriber<Keyboard> {
             }
 
             sprite = builder.assemble();
-            sprite.setZ_index(4);
+
+            SoundBuilder soundBuilder = new SoundBuilder(new SoundRepository());
+            try {
+                soundBuilder.buildPath(SourcePaths.BASE_PATH.concat("/sounds/win-game-2.mp3"));
+            } catch (NonExistentFilePathException e) {
+                throw new RuntimeException(e);
+            }
+
+            Sound sound = soundBuilder.assemble();
 
             try {
                 transmitter.send(new Frame(List.of(sprite), List.of()));

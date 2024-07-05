@@ -1,6 +1,7 @@
 package com.tic_tac_toe.listeners;
 
 import com.bridge.core.exceptions.renderHandlerExceptions.NonExistentFilePathException;
+import com.bridge.core.exceptions.renderHandlerExceptions.RenderException;
 import com.bridge.ipc.SocketClient;
 import com.bridge.ipc.Transmitter;
 import com.bridge.processinputhandler.KeyboardEventManager;
@@ -45,6 +46,8 @@ public class Listener {
                 try {
                     board.initBoard();
                 } catch (NonExistentFilePathException e) {
+                    throw new RuntimeException(e);
+                } catch (RenderException e) {
                     throw new RuntimeException(e);
                 }
                 BoardValidator boardValidator = new BoardValidator(board);

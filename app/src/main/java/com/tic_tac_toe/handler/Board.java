@@ -1,14 +1,23 @@
 package com.tic_tac_toe.handler;
 
 import com.bridge.core.exceptions.renderHandlerExceptions.NonExistentFilePathException;
+import com.bridge.core.exceptions.renderHandlerExceptions.RenderException;
 import com.bridge.ipc.Transmitter;
 import com.bridge.renderHandler.builders.SpriteBuilder;
+import com.bridge.renderHandler.render.Frame;
 import com.bridge.renderHandler.repository.SpriteRepository;
+import com.bridge.renderHandler.sprite.Coord;
+import com.bridge.renderHandler.sprite.Size;
+import com.bridge.renderHandler.sprite.Sprite;
 import com.tic_tac_toe.model.Cell;
 import com.tic_tac_toe.model.Coordinate;
 import com.tic_tac_toe.utils.SourcePaths;
+import java.nio.file.Path;
 
+import java.awt.*;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Board {
 
@@ -17,6 +26,7 @@ public class Board {
     private SpriteBuilder builder;
     private Transmitter transmitter;
     private SpriteRepository boardRepository;
+
 
     public Board(Transmitter transmitter) {
         this.transmitter = transmitter;
@@ -28,21 +38,21 @@ public class Board {
         if (currentCell.getCoordinate().getX() != x || currentCell.getCoordinate().getY() != y) {
             currentCell = board[x][y];
 
-           /* builder = new SpriteBuilder(boardRepository);
-            builder.buildSize(Sizes.HEIGHT_APP, Sizes.WIDTH_APP);
-            builder.buildCoord(0, 0);
+            SpriteBuilder spriteBuilder = new SpriteBuilder(new SpriteRepository());
+            spriteBuilder.buildSize(600.0, 800);
+            spriteBuilder.buildCoord(0, 0);
             try {
-                builder.buildPath(currentCell.getBoardSquare());
+                spriteBuilder.buildPath(currentCell.getBoardSquare());
             } catch (NonExistentFilePathException e) {
                 throw new RuntimeException(e);
             }
-            Sprite sprite1 = builder.assemble();
+            Sprite sprite = spriteBuilder.assemble();
 
             try {
-                transmitter.send(new Frame(List.of(sprite1), List.of()));
+                transmitter.send(new Frame(List.of(sprite), List.of()));
             } catch (RenderException e) {
                 throw new RuntimeException(e);
-            }*/
+            }
         }
     }
 
@@ -91,6 +101,19 @@ public class Board {
                 SourcePaths.BASE_PATH.concat("/board/selectedCells/Board-33.png"));
 
         currentCell = board[0][0];
+
+        SpriteBuilder spriteBuilder = new SpriteBuilder(new SpriteRepository());
+        spriteBuilder.buildSize(600.0, 800);
+        spriteBuilder.buildCoord(0, 0);
+        spriteBuilder.buildPath(currentCell.getBoardSquare());
+        Sprite sprite = spriteBuilder.assemble();
+        sprite.setZ_index(5);
+        try {
+            transmitter.send(new Frame(List.of(sprite), List.of()));
+        } catch (RenderException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     public Cell[][] getBoard() {
